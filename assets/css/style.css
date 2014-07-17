@@ -1,0 +1,406 @@
+/**
+ * -------------------------------------------------------------------------------
+ * PoGo - Organize and Manage your Projects like a Chief
+ * Copyright (c) 2014 by Florian BETIL <fbetil@gmail.com>
+ *
+ * This file is part of PoGo.
+ *
+ * PoGo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PoGo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PoGo.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Florian BETIL : <fbetil@gmail.com>
+ *
+ * Thanks:
+ *
+ * Raphaël Goetter : (http://www.knacss.com/)
+ * -------------------------------------------------------------------------------
+ */
+
+/*Elements*/
+html {
+    font-size: 62.5%;
+    font-size: calc(1em * 0.625);
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+body {
+    font-size: 1.4em;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+}
+header {
+    background: url(../img/logo.png) no-repeat top left;
+    width: 367px;
+    height: 166px;
+    display: table-cell;
+    vertical-align: bottom;
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+nav {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    background-color: #C8BA8F;
+}
+nav a, nav a:visited {
+    text-decoration: none;
+    font-weight: bold;
+    color: #453E1F;
+}
+menu {
+    padding-left: 0px;
+}
+menu a, menu a:visited {
+    text-decoration: none;
+    font-weight: bold;
+    color: #453E1F;
+}
+section > p:first-child {
+    border: 1px dotted gray;
+    background-color: #E8E1CE;
+    padding-left: 5px;
+    color: #453E1F;
+}
+footer {
+}
+ul.unstyled {
+    list-style: none;
+}
+/*Edit In Place*/
+#eip-actions-bottom {
+    bottom: 0px;
+    width: 100%;
+    background-color:gray;
+    position: fixed;
+    color: white;
+    display: none;
+    font-size: 1.2em;
+    text-align: center;
+    line-height: 40px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#eip-actions-bottom a {
+    color: white;
+    margin: 0px 0px 0px 40px;
+    border: solid 1px #cccac8;
+    border-radius: 5px;
+    padding: 3px 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#eip-actions-bottom a:visited {
+    text-decoration: none;
+}
+
+#eip-actions-bottom a:hover {
+    background-color: #cccac8;
+}
+
+#eip-actions-popup {
+    margin: 0px;
+    padding: 10px;
+    background-color:gray;
+    text-align: center;
+}
+#eip-actions-popup a {
+    color: white;
+    margin: 0px 20px 0px 20px;
+    border: solid 1px #cccac8;
+    border-radius: 5px;
+    padding: 3px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 10pt;
+    text-decoration: none;
+}
+
+#eip-actions-popup a:visited {
+    text-decoration: none;
+}
+
+#eip-actions-popup a:hover {
+    background-color: #cccac8;
+}
+.eip_error {
+    border: solid 1px red;
+    background-color: pink;
+    border-radius: 10px;
+    color: red;
+    margin: 5px;
+    padding: 5px;
+    display:none;
+    font-weight:600;
+}
+.eip_field_common{
+    border: 1px solid #E8E1CE;
+    width: 958px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1em;
+}
+.eip_field_textarea{
+    border: 1px solid #E8E1CE;
+    width: 954px;
+    height: 100px;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1em;
+}
+
+.eip_required{
+    background-color: #FFE6E6;
+
+}
+
+/*Position, size, Visibility, Color*/
+ .w960p {
+    width: 960px;
+}
+.h24p {
+    height: 24px;
+}
+.center {
+    margin-right: auto;
+    margin-left: auto;
+}
+.txtleft {
+    text-align: left;
+}
+.txtright {
+    text-align: right;
+}
+.txtcenter {
+    text-align: center;
+}
+.inbl {
+    display: inline-block;
+    vertical-align: top;
+}
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+.hidden {
+    display: none;
+}
+.top {
+    vertical-align: top;
+}
+
+
+/*Typography*/
+ .smaller {
+    font-size: 0.71em;
+}
+.small {
+    font-size: 0.86em;
+}
+.big {
+    font-size: 1.14em;
+}
+.bigger {
+    font-size: 1.29em;
+}
+.biggest {
+    font-size: 1.43em;
+}
+h1, .h1-like {
+    font-size: 3.2rem;
+}
+h2, .h2-like {
+    font-size: 2.8rem;
+}
+h3, .h3-like {
+    font-size: 2.4rem;
+}
+h4, .h4-like {
+    font-size: 2rem;
+}
+h5, .h5-like {
+    font-size: 1.8rem;
+}
+h6, .h6-like {
+    font-size: 1.6rem;
+}
+.fg-gray {
+    color: gray;
+}
+.strong {
+    font-weight: bold;
+}
+/*Padding & Margin*/
+ .man {
+    margin: 0;
+}
+.pan {
+    padding: 0;
+}
+.mas {
+    margin: 1em;
+}
+.mam {
+    margin: 2em;
+}
+.mal {
+    margin: 4em;
+}
+.pas {
+    padding: 1em;
+}
+.pam {
+    padding: 2em;
+}
+.pal {
+    padding: 4em;
+}
+.mtn {
+    margin-top: 0;
+}
+.mts {
+    margin-top: 1em;
+}
+.mtm {
+    margin-top: 2em;
+}
+.mtl {
+    margin-top: 4em;
+}
+.mrn {
+    margin-right: 0;
+}
+.mrs {
+    margin-right: 1em;
+}
+.mrm {
+    margin-right: 2em;
+}
+.mrl {
+    margin-right: 4em;
+}
+.mbn {
+    margin-bottom: 0;
+}
+.mbs {
+    margin-bottom: 1em;
+}
+.mbm {
+    margin-bottom: 2em;
+}
+.mbl {
+    margin-bottom: 4em;
+}
+.mln {
+    margin-left: 0;
+}
+.mls {
+    margin-left: 1em;
+}
+.mlm {
+    margin-left: 2em;
+}
+.mll {
+    margin-left: 4em;
+}
+.ptn {
+    padding-top: 0;
+}
+.pts {
+    padding-top: 1em;
+}
+.ptm {
+    padding-top: 2em;
+}
+.ptl {
+    padding-top: 4em;
+}
+.prn {
+    padding-right: 0;
+}
+.prs {
+    padding-right: 1em;
+}
+.prm {
+    padding-right: 2em;
+}
+.prl {
+    padding-right: 4em;
+}
+.pbn {
+    padding-bottom: 0;
+}
+.pbs {
+    padding-bottom: 1em;
+}
+.pbm {
+    padding-bottom: 2em;
+}
+.pbl {
+    padding-bottom: 4em;
+}
+.pln {
+    padding-left: 0;
+}
+.pls {
+    padding-left: 1em;
+}
+.plm {
+    padding-left: 2em;
+}
+.pll {
+    padding-left: 4em;
+}
+/*Classes*/
+ .list {
+    margin-right: 2em;
+    padding: 3px 5px;
+}
+.list:hover {
+    background-color: #F2EFE3;
+}
+.list_actions {
+    display: none;
+}
+.list_actions a {
+    padding-right: 10px;
+}
+.list:hover .list_actions {
+    display: block;
+}
+.gantt_milestone {
+    background-color: transparent !important;
+    background: url(../img/famfamfamsilk.png) no-repeat top left;
+    background-position: -264px -924px;
+    width: 16px;
+    height: 16px;
+}
+.dropzone {
+    line-height: 25px;
+    font-weight: 800;
+    color: #453E1F;
+    z-index: 9999;
+}
+.dropzone_hover {
+    background-color: #D3E4D5;
+}
+/*Cursor*/
+ .pointer {
+    cursor: pointer;
+}

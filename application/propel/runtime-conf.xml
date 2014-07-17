@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<propel>
+		<datasources default="pogo">
+			<datasource id="pogo">
+				<adapter>mysql</adapter>
+				<connection>
+					<dsn>mysql:host=127.0.0.1:3306;dbname=pogo</dsn>
+					<user>pogo</user>
+					<password>pogo</password>
+					<settings>
+						<setting id="charset">utf8</setting>
+					</settings>
+					<options>
+						<option id="MYSQL_ATTR_INIT_COMMAND">SET NAMES utf8 COLLATE utf8_general_ci</option>
+					</options>
+				</connection>
+			</datasource>
+		</datasources>
+	</propel>
+</config>

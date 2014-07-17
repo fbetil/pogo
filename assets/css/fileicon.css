@@ -1,0 +1,132 @@
+/**
+ * -------------------------------------------------------------------------------
+ * PoGo - Organize and Manage your Projects like a Chief
+ * Copyright (c) 2014 by Florian BETIL <fbetil@gmail.com>
+ *
+ * This file is part of PoGo.
+ *
+ * PoGo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PoGo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PoGo.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors:
+ *
+ * Florian BETIL : <fbetil@gmail.com>
+ *
+ * Thanks:
+ *
+ * Jordan Michael (http://www.jordan-michael.com)
+ * -------------------------------------------------------------------------------
+ */
+ 
+ .fileicon24 {background: url(../img/fileicon24.png) no-repeat top left; display: inline-block; vertical-align: middle; }
+
+.fileicon24_ac3{ background-position: 0 0; width: 24px; height: 24px; } 
+.fileicon24_ace{ background-position: 0 -74px; width: 24px; height: 24px; } 
+.fileicon24_ade{ background-position: 0 -148px; width: 24px; height: 24px; } 
+.fileicon24_adp{ background-position: 0 -222px; width: 24px; height: 24px; } 
+.fileicon24_ai{ background-position: 0 -296px; width: 24px; height: 24px; } 
+.fileicon24_aiff{ background-position: 0 -370px; width: 24px; height: 24px; } 
+.fileicon24_au{ background-position: 0 -444px; width: 24px; height: 24px; } 
+.fileicon24_avi{ background-position: 0 -518px; width: 24px; height: 24px; } 
+.fileicon24_bat{ background-position: 0 -592px; width: 24px; height: 24px; } 
+.fileicon24_bin{ background-position: 0 -666px; width: 24px; height: 24px; } 
+.fileicon24_bmp{ background-position: 0 -740px; width: 24px; height: 24px; } 
+.fileicon24_bup{ background-position: 0 -814px; width: 24px; height: 24px; } 
+.fileicon24_cab{ background-position: 0 -888px; width: 24px; height: 24px; } 
+.fileicon24_cat{ background-position: 0 -962px; width: 24px; height: 24px; } 
+.fileicon24_chm{ background-position: 0 -1036px; width: 24px; height: 24px; } 
+.fileicon24_css{ background-position: 0 -1110px; width: 24px; height: 24px; } 
+.fileicon24_cue{ background-position: 0 -1184px; width: 24px; height: 24px; } 
+.fileicon24_dat{ background-position: 0 -1258px; width: 24px; height: 24px; } 
+.fileicon24_dcr{ background-position: 0 -1332px; width: 24px; height: 24px; } 
+.fileicon24_default{ background-position: 0 -1406px; width: 24px; height: 24px; } 
+.fileicon24_der{ background-position: 0 -1480px; width: 24px; height: 24px; } 
+.fileicon24_dic{ background-position: 0 -1554px; width: 24px; height: 24px; } 
+.fileicon24_divx{ background-position: 0 -1628px; width: 24px; height: 24px; } 
+.fileicon24_diz{ background-position: 0 -1702px; width: 24px; height: 24px; } 
+.fileicon24_dll{ background-position: 0 -1776px; width: 24px; height: 24px; } 
+.fileicon24_doc{ background-position: 0 -1850px; width: 24px; height: 24px; } 
+.fileicon24_docx{ background-position: 0 -1924px; width: 24px; height: 24px; } 
+.fileicon24_dos{ background-position: -74px 0; width: 24px; height: 24px; } 
+.fileicon24_dvd{ background-position: -74px -74px; width: 24px; height: 24px; } 
+.fileicon24_dwg{ background-position: -74px -148px; width: 24px; height: 24px; } 
+.fileicon24_dwt{ background-position: -74px -222px; width: 24px; height: 24px; } 
+.fileicon24_emf{ background-position: -74px -296px; width: 24px; height: 24px; } 
+.fileicon24_exc{ background-position: -74px -370px; width: 24px; height: 24px; } 
+.fileicon24_fon{ background-position: -74px -444px; width: 24px; height: 24px; } 
+.fileicon24_gif{ background-position: -74px -518px; width: 24px; height: 24px; } 
+.fileicon24_hlp{ background-position: -74px -592px; width: 24px; height: 24px; } 
+.fileicon24_html{ background-position: -74px -666px; width: 24px; height: 24px; } 
+.fileicon24_ifo{ background-position: -74px -740px; width: 24px; height: 24px; } 
+.fileicon24_inf{ background-position: -74px -814px; width: 24px; height: 24px; } 
+.fileicon24_ini{ background-position: -74px -888px; width: 24px; height: 24px; } 
+.fileicon24_ins{ background-position: -74px -962px; width: 24px; height: 24px; } 
+.fileicon24_ip{ background-position: -74px -1036px; width: 24px; height: 24px; } 
+.fileicon24_iso{ background-position: -74px -1110px; width: 24px; height: 24px; } 
+.fileicon24_isp{ background-position: -74px -1184px; width: 24px; height: 24px; } 
+.fileicon24_java{ background-position: -74px -1258px; width: 24px; height: 24px; } 
+.fileicon24_jfif{ background-position: -74px -1332px; width: 24px; height: 24px; } 
+.fileicon24_jpeg{ background-position: -74px -1406px; width: 24px; height: 24px; } 
+.fileicon24_jpg{ background-position: -74px -1480px; width: 24px; height: 24px; } 
+.fileicon24_log{ background-position: -74px -1554px; width: 24px; height: 24px; } 
+.fileicon24_m4a{ background-position: -74px -1628px; width: 24px; height: 24px; } 
+.fileicon24_mid{ background-position: -74px -1702px; width: 24px; height: 24px; } 
+.fileicon24_mmf{ background-position: -74px -1776px; width: 24px; height: 24px; } 
+.fileicon24_mmm{ background-position: -74px -1850px; width: 24px; height: 24px; } 
+.fileicon24_mov{ background-position: -74px -1924px; width: 24px; height: 24px; } 
+.fileicon24_movie{ background-position: -148px 0; width: 24px; height: 24px; } 
+.fileicon24_mp2{ background-position: -148px -74px; width: 24px; height: 24px; } 
+.fileicon24_mp2v{ background-position: -148px -148px; width: 24px; height: 24px; } 
+.fileicon24_mp3{ background-position: -148px -222px; width: 24px; height: 24px; } 
+.fileicon24_mp4{ background-position: -148px -296px; width: 24px; height: 24px; } 
+.fileicon24_mpe{ background-position: -148px -370px; width: 24px; height: 24px; } 
+.fileicon24_mpeg{ background-position: -148px -444px; width: 24px; height: 24px; } 
+.fileicon24_mpg{ background-position: -148px -518px; width: 24px; height: 24px; } 
+.fileicon24_mpv2{ background-position: -148px -592px; width: 24px; height: 24px; } 
+.fileicon24_nfo{ background-position: -148px -666px; width: 24px; height: 24px; } 
+.fileicon24_pdd{ background-position: -148px -740px; width: 24px; height: 24px; } 
+.fileicon24_pdf{ background-position: -148px -814px; width: 24px; height: 24px; } 
+.fileicon24_php{ background-position: -148px -888px; width: 24px; height: 24px; } 
+.fileicon24_png{ background-position: -148px -962px; width: 24px; height: 24px; } 
+.fileicon24_ppt{ background-position: -148px -1036px; width: 24px; height: 24px; } 
+.fileicon24_pptx{ background-position: -148px -1110px; width: 24px; height: 24px; } 
+.fileicon24_preview{ background-position: -148px -1184px; width: 24px; height: 24px; } 
+.fileicon24_psd{ background-position: -148px -1258px; width: 24px; height: 24px; } 
+.fileicon24_rar{ background-position: -148px -1332px; width: 24px; height: 24px; } 
+.fileicon24_reg{ background-position: -148px -1406px; width: 24px; height: 24px; } 
+.fileicon24_rtf{ background-position: -148px -1480px; width: 24px; height: 24px; } 
+.fileicon24_scp{ background-position: -148px -1554px; width: 24px; height: 24px; } 
+.fileicon24_theme{ background-position: -148px -1628px; width: 24px; height: 24px; } 
+.fileicon24_tif{ background-position: -148px -1702px; width: 24px; height: 24px; } 
+.fileicon24_tiff{ background-position: -148px -1776px; width: 24px; height: 24px; } 
+.fileicon24_tlb{ background-position: -148px -1850px; width: 24px; height: 24px; } 
+.fileicon24_ttf{ background-position: -148px -1924px; width: 24px; height: 24px; } 
+.fileicon24_txt{ background-position: -222px 0; width: 24px; height: 24px; } 
+.fileicon24_uis{ background-position: -222px -74px; width: 24px; height: 24px; } 
+.fileicon24_url{ background-position: -222px -148px; width: 24px; height: 24px; } 
+.fileicon24_vbs{ background-position: -222px -222px; width: 24px; height: 24px; } 
+.fileicon24_vcr{ background-position: -222px -296px; width: 24px; height: 24px; } 
+.fileicon24_vob{ background-position: -222px -370px; width: 24px; height: 24px; } 
+.fileicon24_wav{ background-position: -222px -444px; width: 24px; height: 24px; } 
+.fileicon24_wba{ background-position: -222px -518px; width: 24px; height: 24px; } 
+.fileicon24_wma{ background-position: -222px -592px; width: 24px; height: 24px; } 
+.fileicon24_wmv{ background-position: -222px -666px; width: 24px; height: 24px; } 
+.fileicon24_wpl{ background-position: -222px -740px; width: 24px; height: 24px; } 
+.fileicon24_wri{ background-position: -222px -814px; width: 24px; height: 24px; } 
+.fileicon24_wtx{ background-position: -222px -888px; width: 24px; height: 24px; } 
+.fileicon24_xls{ background-position: -222px -962px; width: 24px; height: 24px; } 
+.fileicon24_xlsx{ background-position: -222px -1036px; width: 24px; height: 24px; } 
+.fileicon24_xml{ background-position: -222px -1110px; width: 24px; height: 24px; } 
+.fileicon24_xsl{ background-position: -222px -1184px; width: 24px; height: 24px; } 
+.fileicon24_zap{ background-position: -222px -1258px; width: 24px; height: 24px; } 
+.fileicon24_zip{ background-position: -222px -1332px; width: 24px; height: 24px; } 

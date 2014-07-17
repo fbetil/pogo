@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="pogo" defaultIdMethod="native" namespace="PoGo" >
+	<!-- Project -->
+	<table name="project" phpName="Project">
+		<column name="projectid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="projectcode" type="varchar" size="14" required="true" phpName="Code"/>
+		<unique name="indexcode">
+			<unique-column name="projectcode"/>
+		</unique>
+		<column name="projectname" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="projectdescription" type="longvarchar" phpName="Description"/>
+		<column name="projectstartdate" type="date" required="true" phpName="StartDate"/>
+		<column name="projectduedate" type="date" phpName="DueDate"/>
+		<column name="projectenddate" type="date" phpName="EndDate"/>
+	</table>
+
+	<table name="project_actor" phpName="ProjectActor">
+		<column name="projectactorid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="projectid" type="integer" required="true" phpName="ProjectId"/>
+		<foreign-key foreignTable="project" phpName="Project">
+			<reference local="projectid" foreign="projectid"/>
+		</foreign-key>
+		<column name="actorid" type="integer" required="true" phpName="ActorId"/>
+		<foreign-key foreignTable="actor" phpName="Actor">
+			<reference local="actorid" foreign="actorid"/>
+		</foreign-key>
+		<column name="projectactorrole" type="varchar" size="255" required="true" phpName="Role"/>
+	</table>
+
+	<!-- Actor -->
+	<table name="actor" phpName="Actor">
+		<column name="actorid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="actorfirstname" type="varchar" size="50" required="true" phpName="FirstName"/>
+		<column name="actorname" type="varchar" size="50" required="true" phpName="Name"/>
+		<column name="actorentity" type="varchar" size="255" required="true" phpName="Entity"/>
+	</table>
+
+	<!-- File -->
+	<table name="file" phpName="File">
+		<column name="fileid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="filename" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="filefolder" type="varchar" size="255" phpName="Folder"/>
+		<column name="filecontent" type="blob" required="true" phpName="Content"/>
+		<column name="filemimetype" type="varchar" size="255" required="true" phpName="MimeType"/>
+		<column name="filesize" type="integer" required="true" phpName="Size"/>
+		<column name="fileversion" type="integer" required="true" phpName="Version"/>
+		<column name="actorid" type="integer" required="true" phpName="ActorId"/>
+		<foreign-key foreignTable="actor" phpName="Actor">
+			<reference local="actorid" foreign="actorid"/>
+		</foreign-key>
+        <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
+        <foreign-key foreignTable="project" phpName="Project">
+            <reference local="projectid" foreign="projectid"/>
+        </foreign-key>
+	</table>
+
+	<!-- Milestone -->
+	<table name="milestone" phpName="Milestone">
+		<column name="milestoneid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="milestonename" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="milestonedescription" type="longvarchar" phpName="Description"/>
+		<column name="milestoneduedate" type="date" required="true" phpName="DueDate"/>
+        <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
+        <foreign-key foreignTable="project" phpName="Project">
+            <reference local="projectid" foreign="projectid"/>
+        </foreign-key>
+	</table>
+
+	<!-- Task -->
+	<table name="task" phpName="Task">
+		<column name="taskid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="taskname" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="taskdescription" type="longvarchar" phpName="Description"/>
+		<column name="taskstartdate" type="date" phpName="StartDate"/>
+		<column name="taskduedate" type="date" phpName="DueDate"/>
+		<column name="taskprogress" type="integer" required="true" phpName="Progress"/>
+        <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
+        <foreign-key foreignTable="project" phpName="Project">
+            <reference local="projectid" foreign="projectid"/>
+        </foreign-key>
+	</table>
+
+	<table name="task_actor" phpName="TaskActor">
+		<column name="taskactorid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="taskid" type="integer" required="true" phpName="TaskId"/>
+		<foreign-key foreignTable="task" phpName="Task">
+			<reference local="taskid" foreign="taskid"/>
+		</foreign-key>
+		<column name="actorid" type="integer" required="true" phpName="ActorId"/>
+		<foreign-key foreignTable="actor" phpName="Actor">
+			<reference local="actorid" foreign="actorid"/>
+		</foreign-key>
+	</table>
+
+	<!-- Note -->
+	<table name="note" phpName="Note">
+		<column name="noteid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="notename" type="longvarchar" required="true" phpName="Name"/>
+		<column name="notecontent" type="longvarchar" required="true" phpName="Content"/>
+		<column name="actorid" type="integer" required="true" phpName="ActorId"/>
+		<foreign-key foreignTable="actor" phpName="Actor">
+			<reference local="actorid" foreign="actorid"/>
+		</foreign-key>
+		<column name="notepublishedat" type="timestamp" required="true" phpName="PublishedAt"/>
+        <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
+        <foreign-key foreignTable="project" phpName="Project">
+            <reference local="projectid" foreign="projectid"/>
+        </foreign-key>
+	</table>
+
+	<!-- User management -->
+	<table name="user" phpName="User">
+		<column name="userid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="userlogin" type="varchar" size="20" required="true" phpName="Login"/>
+		<unique name="indexlogin">
+			<unique-column name="userlogin"/>
+		</unique>
+		<column name="userfirstname" type="varchar" size="50" required="true" phpName="FirstName"/>
+		<column name="username" type="varchar" size="50" required="true" phpName="Name"/>
+		<column name="userpassword" type="varchar" size="32" required="true" phpName="Password"/>
+		<column name="useremail" type="varchar" size="50" required="true" phpName="Email"/>
+		<unique name="indexemail">
+			<unique-column name="useremail"/>
+		</unique>
+		<column name="actorid" type="integer" required="true" phpName="ActorId"/>
+		<foreign-key foreignTable="actor" phpName="Actor">
+			<reference local="actorid" foreign="actorid"/>
+		</foreign-key>
+		<unique name="indexactorid">
+			<unique-column name="actorid"/>
+		</unique>
+		<column name="userproperties" type="longvarchar" required="true" phpName="Properties" />
+	</table>
+
+	<table name="profile" phpName="Profile">
+		<column name="profileid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="profilename" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="profilecomment" type="varchar" size="255" phpName="Comment"/>
+	</table>
+
+	<table name="role" phpName="Role">
+		<column name="roleid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="rolename" type="varchar" size="255" required="true" phpName="Name"/>
+		<column name="rolecomment" type="varchar" size="255" phpName="Comment"/>
+	</table>
+
+	<table name="user_profile" phpName="UserProfile">
+		<column name="userprofileid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="userid" type="integer" required="true" phpName="UserId"/>
+		<foreign-key foreignTable="user" phpName="User">
+			<reference local="userid" foreign="userid"/>
+		</foreign-key>
+		<column name="profileid" type="integer" required="true" phpName="ProfileId"/>
+		<foreign-key foreignTable="profile" phpName="Profile">
+			<reference local="profileid" foreign="profileid"/>
+		</foreign-key>
+	</table>
+
+	<table name="profile_role" phpName="ProfileRole">
+		<column name="profileroleid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
+		<column name="profileid" type="integer" required="true" phpName="ProfileId"/>
+		<foreign-key foreignTable="profile" phpName="Profile">
+			<reference local="profileid" foreign="profileid"/>
+		</foreign-key>
+		<column name="roleid" type="integer" required="true" phpName="RoleId"/>
+		<foreign-key foreignTable="role" phpName="Role">
+			<reference local="roleid" foreign="roleid"/>
+		</foreign-key>
+		<column name="profilerolerestrictions" type="longvarchar" phpName="Restrictions" />
+	</table>
+	
+	<!-- Code Igniter sessions -->
+	<table name="session" phpName="Session">
+		<column name="session_id" type="varchar" size="40" required="true" primaryKey="true" defaultValue="0" phpName="Id"/>
+		<column name="ip_address" type="varchar" size="45" required="true" defaultValue="0" phpName="IpAddress"/>
+		<column name="user_agent" type="varchar" size="120" required="true" phpName="UserAgent"/>
+		<column name="last_activity" type="integer" required="true" defaultValue="0" phpName="LastActivity"/>
+		<index name="last_activity_idx">
+			<index-column name="last_activity"/>
+		</index>
+		<column name="user_data" type="longvarchar" required="true" phpName="UserData"/>
+	</table>
+</database>

@@ -1,0 +1,8 @@
+{
+    "require": {
+        "propel/propel1": "1.6.8",
+        "playmedia/smarty": "v3.1.17",
+        "swiftmailer/swiftmailer": "v5.2.0",
+        "sabre/dav": "dev-master"
+    }
+}
