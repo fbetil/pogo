@@ -53,8 +53,8 @@ abstract class BaseActorPeer
     /** the column name for the actorname field */
     const ACTORNAME = 'actor.actorname';
 
-    /** the column name for the actorentity field */
-    const ACTORENTITY = 'actor.actorentity';
+    /** the column name for the actororganization field */
+    const ACTORORGANIZATION = 'actor.actororganization';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -75,11 +75,11 @@ abstract class BaseActorPeer
      * e.g. ActorPeer::$fieldNames[ActorPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'FirstName', 'Name', 'Entity', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'firstName', 'name', 'entity', ),
-        BasePeer::TYPE_COLNAME => array (ActorPeer::ACTORID, ActorPeer::ACTORFIRSTNAME, ActorPeer::ACTORNAME, ActorPeer::ACTORENTITY, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ACTORID', 'ACTORFIRSTNAME', 'ACTORNAME', 'ACTORENTITY', ),
-        BasePeer::TYPE_FIELDNAME => array ('actorid', 'actorfirstname', 'actorname', 'actorentity', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'FirstName', 'Name', 'Organization', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'firstName', 'name', 'organization', ),
+        BasePeer::TYPE_COLNAME => array (ActorPeer::ACTORID, ActorPeer::ACTORFIRSTNAME, ActorPeer::ACTORNAME, ActorPeer::ACTORORGANIZATION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ACTORID', 'ACTORFIRSTNAME', 'ACTORNAME', 'ACTORORGANIZATION', ),
+        BasePeer::TYPE_FIELDNAME => array ('actorid', 'actorfirstname', 'actorname', 'actororganization', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -90,11 +90,11 @@ abstract class BaseActorPeer
      * e.g. ActorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FirstName' => 1, 'Name' => 2, 'Entity' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'firstName' => 1, 'name' => 2, 'entity' => 3, ),
-        BasePeer::TYPE_COLNAME => array (ActorPeer::ACTORID => 0, ActorPeer::ACTORFIRSTNAME => 1, ActorPeer::ACTORNAME => 2, ActorPeer::ACTORENTITY => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ACTORID' => 0, 'ACTORFIRSTNAME' => 1, 'ACTORNAME' => 2, 'ACTORENTITY' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('actorid' => 0, 'actorfirstname' => 1, 'actorname' => 2, 'actorentity' => 3, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FirstName' => 1, 'Name' => 2, 'Organization' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'firstName' => 1, 'name' => 2, 'organization' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ActorPeer::ACTORID => 0, ActorPeer::ACTORFIRSTNAME => 1, ActorPeer::ACTORNAME => 2, ActorPeer::ACTORORGANIZATION => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ACTORID' => 0, 'ACTORFIRSTNAME' => 1, 'ACTORNAME' => 2, 'ACTORORGANIZATION' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('actorid' => 0, 'actorfirstname' => 1, 'actorname' => 2, 'actororganization' => 3, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
@@ -172,12 +172,12 @@ abstract class BaseActorPeer
             $criteria->addSelectColumn(ActorPeer::ACTORID);
             $criteria->addSelectColumn(ActorPeer::ACTORFIRSTNAME);
             $criteria->addSelectColumn(ActorPeer::ACTORNAME);
-            $criteria->addSelectColumn(ActorPeer::ACTORENTITY);
+            $criteria->addSelectColumn(ActorPeer::ACTORORGANIZATION);
         } else {
             $criteria->addSelectColumn($alias . '.actorid');
             $criteria->addSelectColumn($alias . '.actorfirstname');
             $criteria->addSelectColumn($alias . '.actorname');
-            $criteria->addSelectColumn($alias . '.actorentity');
+            $criteria->addSelectColumn($alias . '.actororganization');
         }
     }
 

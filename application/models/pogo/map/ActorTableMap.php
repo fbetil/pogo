@@ -45,7 +45,7 @@ class ActorTableMap extends TableMap
         $this->addPrimaryKey('actorid', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('actorfirstname', 'FirstName', 'VARCHAR', true, 50, null);
         $this->addColumn('actorname', 'Name', 'VARCHAR', true, 50, null);
-        $this->addColumn('actorentity', 'Entity', 'VARCHAR', true, 255, null);
+        $this->addColumn('actororganization', 'Organization', 'VARCHAR', true, 255, null);
         // validators
     } // initialize()
 

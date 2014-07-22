@@ -74,11 +74,15 @@ $lang["app_menu_1"] = "Revenir";
 $lang["dashboard_home_title"] = "Tableau de bord";
 
 $lang["dashboard_home_h_1"] = "Tableau de bord";
-$lang["dashboard_home_h_2"] = "Projets";
+$lang["dashboard_home_h_2"] = "Projets récents";
 $lang["dashboard_home_h_3"] = "Gestion";
 $lang["dashboard_home_h_4"] = "Administration";
 
+$lang["dashboard_home_a_1"] = "Ajouter";
+$lang["dashboard_home_a_2"] = "Supprimer";
+
 $lang["dashboard_home_p_1"] = "Bienvenue dans votre espace de travail";
+$lang["dashboard_home_p_2"] = "Aucun enregistrement";
 
 //Core
 $lang["core_mailgate_p_1"] = "PoGo: Erreur d'intégration email";
@@ -121,6 +125,19 @@ $lang["project_view_p_6"] = "Vous pouvez ajouter un fichier dans un dossier\nen 
 
 $lang["project_view_p_7"] = "Racine";
 
+$lang["project_add_a_1"] = "Nouveau projet";
+
+$lang["project_add_p_1"] = "Nouveau projet";
+$lang["project_add_p_2"] = "Chef de projet";
+
+$lang["project_index_h_1"] = "Projets";
+$lang["project_index_h_2"] = "Projets";
+
+$lang["project_index_a_1"] = "Nouveau projet";
+$lang["project_index_a_2"] = "Supprimer";
+
+$lang["project_index_p_1"] = "Aucun enregistrement";
+
 //File
 $lang["file_view_h_1"] = "Projet";
 $lang["file_view_h_2"] = "Fichier";
@@ -136,6 +153,7 @@ $lang["file_view_p_7"] = "Auteur";
 $lang["file_view_p_8"] = "Dossier";
 
 $lang["file_view_a_1"] = "Modifier";
+$lang["file_view_a_2"] = "Supprimer";
 
 $lang["file_upload_p_1"] = "Projet";
 $lang["file_upload_p_2"] = "Dossier";
@@ -143,7 +161,6 @@ $lang["file_upload_p_2"] = "Dossier";
 //Task
 $lang["task_view_h_1"] = "Projet";
 $lang["task_view_h_2"] = "Tâche";
-$lang["task_view_h_3"] = "Acteurs";
 
 $lang["task_view_p_1"] = "Code";
 $lang["task_view_p_2"] = "Nom";
@@ -154,8 +171,10 @@ $lang["task_view_p_6"] = "Début";
 $lang["task_view_p_7"] = "Cible";
 $lang["task_view_p_8"] = "Progression";
 $lang["task_view_p_9"] = "Aucun enregistrement";
+$lang["task_view_p_10"] = "Acteurs";
 
 $lang["task_view_a_1"] = "Modifier";
+$lang["task_view_a_2"] = "Supprimer";
 
 $lang["task_add_a_1"] = "Nouvelle tâche";
 
@@ -173,6 +192,7 @@ $lang["milestone_view_p_5"] = "Description";
 $lang["milestone_view_p_6"] = "Cible";
 
 $lang["milestone_view_a_1"] = "Modifier";
+$lang["milestone_view_a_2"] = "Supprimer";
 
 $lang["milestone_add_a_1"] = "Nouveau jalon";
 
@@ -191,10 +211,33 @@ $lang["note_view_p_6"] = "Auteur";
 $lang["note_view_p_7"] = "Contenu";
 
 $lang["note_view_a_1"] = "Modifier";
+$lang["note_view_a_2"] = "Supprimer";
 
 $lang["note_add_a_1"] = "Nouvelle note";
 
 $lang["note_add_p_1"] = "Nouvelle note";
+
+//Actor
+$lang["projectactor_view_h_1"] = "Projet";
+$lang["projectactor_view_h_2"] = "Acteur";
+
+$lang["projectactor_view_p_1"] = "Code";
+$lang["projectactor_view_p_2"] = "Nom";
+$lang["projectactor_view_p_3"] = "Description";
+$lang["projectactor_view_p_4"] = "Acteur";
+$lang["projectactor_view_p_5"] = "Rôle";
+
+$lang["projectactor_view_a_1"] = "Modifier";
+$lang["projectactor_view_a_2"] = "Supprimer";
+
+$lang["projectactor_add_a_1"] = "Associer un acteur à un projet";
+
+//Webdav
+$lang["webdav_projects_p_1"] = "Notes";
+$lang["webdav_projects_p_2"] = "Fichiers";
+$lang["webdav_projects_p_3"] = "Acteurs";
+$lang["webdav_projects_p_4"] = "Planning GANTT.ics";
+$lang["webdav_projects_p_5"] = "%s pour le projet %s";
 
 //Errors
 $lang["error_processing_json"] = "Erreur d'interprétation de la chaîne JSON.";

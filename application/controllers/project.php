@@ -30,12 +30,32 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Project extends CI_Controller {
 
+    public function Index(){
+        //Verify authorization
+        $this->pogo->auth->checkRole('ProjectViewer');
+
+        //generate nav & menu
+        $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
+        $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
+
+        //get user linked projects
+        $projects = PoGo\ProjectQuery::create()
+            ->useProjectActorQuery()
+                ->filterByActorId($this->session->userdata('actor_id'))
+            ->endUse()
+            ->orderByCode('desc')
+            ->find();
+
+        //render
+        $this->pogo->html->view('project/projects.php', array('projects'=>$projects));
+    }
+
     public function View($projectid) {
         //Verify authorization
         $this->pogo->auth->checkRole('ProjectViewer');
 
         //get project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($projectid)) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
 
         //get ordered linked files
         $files = PoGo\FileQuery::create()
@@ -54,12 +74,31 @@ class Project extends CI_Controller {
         $this->pogo->html->view('project/project.php', array('project'=>$project, 'files'=>$files));
 	}
 
+    public function Add() {
+        //Verify authorization
+        $this->pogo->auth->checkRole('ProjectEditor');
+
+        //generate new project
+        $project = new PoGo\Project();
+        $project->setCode('POGO.'.date('ym').'.');
+
+        //generate nav
+        $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
+        $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
+        $this->pogo->html->addToNav(lang('project_add_a_1'), site_url('/project/add'));
+
+        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project'));
+
+        //render
+        $this->pogo->html->view('project/project.php', array('project'=>$project, 'files'=>array()));
+    }
+
     public function Gantt($projectid){
         //Verify authorization
         $this->pogo->auth->checkRole('ProjectViewer');
 
         //get project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($projectid)) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
 
         //generate gantt xml data
         $gantt = array();
@@ -107,10 +146,9 @@ class Project extends CI_Controller {
 
         //Set form validation rules
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('Id', 'lang:identifier', 'required|integer');
-        $this->form_validation->set_rules('Code', 'lang:projects_view_p_4', 'required');
-        $this->form_validation->set_rules('Name', 'lang:projects_view_p_2', 'required');
-        $this->form_validation->set_rules('Description', 'lang:projects_view_p_3', 'required');
+        $this->form_validation->set_rules('Code', 'lang:project_view_p_4', 'required|callback_projectcode_check|callback_isunique_projectcode_check['.$this->input->post('Id').']');
+        $this->form_validation->set_rules('Name', 'lang:project_view_p_2', 'required');
+        $this->form_validation->set_rules('Description', 'lang:project_view_p_3', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->pogo->html->error(validation_errors());
@@ -123,11 +161,11 @@ class Project extends CI_Controller {
                 //get project if not a new project
                 if ($inputdata['Id']){
                     //get project or exit if not linked to project
-                    ($project = $this->pogo->auth->getProject($inputdata['Id'])) ?: $this->pogo->html->e401();
+                    ($project = $this->pogo->getLinkedProject($inputdata['Id'])) ?: $this->pogo->html->e401();
                 }
 
                 //Try to retrieve existing project
-                $project = PoGo\ProjectsQuery::create()
+                $project = PoGo\ProjectQuery::create()
                     ->filterById($inputdata['Id'])
                     ->findOneOrCreate();
                 
@@ -135,7 +173,17 @@ class Project extends CI_Controller {
                 $project->fromArray($inputdata);
 
                 //Save
+                $isnew = $project->isNew();
                 $project->save();
+
+                //Link user to project
+                if($isnew){
+                    $projectactor = new PoGo\ProjectActor();
+                    $projectactor->setProjectId($project->getId())
+                        ->setActorId($this->session->userdata('actor_id'))
+                        ->setRole(lang('project_add_p_2'))
+                        ->save();
+                }
 
                 //send success
                 $this->pogo->html->success($project->getId());
@@ -144,6 +192,41 @@ class Project extends CI_Controller {
                 $this->pogo->html->error($e->getMessage());
             }
         }
+    }
+
+    public function Delete($projectid){
+        //Verify authorization
+        $this->pogo->auth->checkRole('ProjectEditor');
+
+        //get linked project or exit if not linked to project
+        ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
+
+        //delete all linked project
+        PoGo\FileQuery::create()->filterByProjectId($projectid)->delete();
+        PoGo\MilestoneQuery::create()->filterByProjectId($projectid)->delete();
+        PoGo\NoteQuery::create()->filterByProjectId($projectid)->delete();
+
+        $tasks = PoGo\TaskQuery::create()->filterByProjectId($projectid)->find();
+        foreach ($tasks as $task) {
+            PoGo\TaskActorQuery::create()->filterByTaskId($task->getId())->delete();
+            $task->delete();
+        }
+
+        PoGo\ProjectActorQuery::create()->filterByProjectId($projectid)->delete();
+        
+        //then delete project
+        $project->delete();
+
+        //return success
+        $this->pogo->html->success();
+    }
+
+    public function ProjectCode_check($projectcode) {
+        return $this->pogo->ProjectCode_check($projectcode);
+    }
+
+    public function IsUnique_ProjectCode_check($projectcode, $projectid) {
+        return $this->pogo->IsUnique_ProjectCode_check($projectcode, $projectid);
     }
     
 }

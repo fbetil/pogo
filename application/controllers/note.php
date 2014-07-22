@@ -38,7 +38,7 @@ class Note extends CI_Controller {
         ($note = PoGo\NoteQuery::create()->findPk($noteid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($note->getProjectId())) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($note->getProjectId())) ?: $this->pogo->html->e401();
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
@@ -58,7 +58,7 @@ class Note extends CI_Controller {
         $this->pogo->auth->checkRole('NoteEditor');
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($projectid)) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
 
         //generate new Note
         $note = new PoGo\Note();
@@ -97,7 +97,7 @@ class Note extends CI_Controller {
                 if($inputdata['Id'] == '') $inputdata['Id'] = null;
 
                 //get linked project or exit if not linked to project
-                ($project = $this->pogo->auth->getProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
+                ($project = $this->pogo->getLinkedProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
                 //Set author and published date
                 $inputdata['ActorId'] = $this->session->userdata('actor_id');
@@ -131,7 +131,7 @@ class Note extends CI_Controller {
         ($note = PoGo\NoteQuery::create()->findPk($noteid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($note->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+        ($project = $this->pogo->getLinkedProject($note->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //delete note and link
         $note->delete();

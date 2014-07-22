@@ -41,7 +41,8 @@
 	<!-- Note details -->
 	<section id="note" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_note"></i>{lang('note_view_h_2')}
-			{if isset($user_roles['NoteEditor'])}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('note')" title="{lang('note_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
+			{if isset($user_roles['NoteEditor']) && !$note->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="ajax('/note/delete/{$note->getId()}', '{$url_index}/project/view/{$project->getId()}');" title="{lang('note_view_a_2')}"><i class="fam fam_note_delete"></i></a>{/if}
+			{if isset($user_roles['NoteEditor']) && !$note->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('note')" title="{lang('note_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
 		</p>
 		<div data-eip-name="note" data-eip-url="{$url_index}/note/post" data-eip-label="{if $note->isNew()}{sprintf(lang('creation_in_progress'), lang('note_add_p_1'))|escape}{else}{sprintf(lang('modification_in_progress'), $note->getName())|escape}{/if}" >
 			<span data-eip-field-name="Id" data-eip-field-type="hidden" data-eip-field-value="{$note->getId()}"></span>

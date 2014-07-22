@@ -26,34 +26,41 @@
  * -------------------------------------------------------------------------------
  */
 
+use Sabre\DAV;
+
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Dashboard extends CI_Controller {
+class Webdav extends CI_Controller {
 
-    public function Index() {
-		//redirect to user homepage
-		header('location: '.site_url($this->session->userdata('homepage')));
-	}
+    public function __construct(){
+        parent::__construct();
 
-    public function Home(){
-		//Verify authorization
-        $this->pogo->auth->checkRole('DashboardViewer');
+        //Load functionnalities
+        require APPPATH.'libraries/pogo.webdav.php';
+        require APPPATH.'libraries/pogo.webdav.directory.php';
+        require APPPATH.'libraries/pogo.webdav.file.php';
 
-        //generate nav & menu
-        $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
-
-        //get user linked recents projects
-        $projects = PoGo\ProjectQuery::create()
-            ->useProjectActorQuery()
-                ->filterByActorId($this->session->userdata('actor_id'))
-            ->endUse()
-            ->orderByCode('desc')
-            ->limit(20)
-            ->find();
-
-        //render
-        $this->pogo->html->view('dashboard/home.php', array('projects'=>$projects));
+        //instanciate
+        $this->pogo->webdav = new PoGoWebdav($this->pogo);
     }
-    
-}
 
+    public function Index($path = array()){
+        //Verify authorization
+        $this->pogo->auth->checkRole('WebdavViewer');
+
+        $path = func_get_args();
+
+        $root = new PoGoWebdavDirectory($this->pogo, $path);
+
+        // The object tree needs in turn to be passed to the server class
+        $server = new DAV\Server($root);
+
+        // We're required to set the base uri, it is recommended to put your webdav server on a root of a domain
+        $server->setBaseUri('/index.php/webdav/index');
+
+        // And off we go!
+        $server->exec();
+
+    }
+
+}

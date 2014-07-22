@@ -28,65 +28,73 @@
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Milestone extends CI_Controller {
+class ProjectActor extends CI_Controller {
 
-    public function View($milestoneid) {
+    public function View($projectactorid) {
         //Verify authorization
-        $this->pogo->auth->checkRole('MilestoneViewer');
+        $this->pogo->auth->checkRole('ProjectActorViewer');
 
-        //get milestone or exit if not linked to project
-        ($milestone = PoGo\MilestoneQuery::create()->findPk($milestoneid)) ?: $this->pogo->html->e401();
+        //get projectactor or exit if projectactor not exists
+        ($projectactor = PoGo\ProjectActorQuery::create()->findPk($projectactorid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->getLinkedProject($milestone->getProjectId())) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($projectactor->getProjectId())) ?: $this->pogo->html->e401();
+
+        //get list of actors
+        $actors = PoGo\ActorQuery::create('Actor')->select(array('Id','Label'))->withColumn('CONCAT(Actor.FirstName, \' \', Actor.Name)','Label')->orderByFirstName()->orderByName()->find()->toArray();
+        array_unshift($actors, array('Id'=>0, 'Label'=>'---'));
+        $actors = json_encode($actors , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
         $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
-        $this->pogo->html->addToNav($milestone->getName(), site_url('/milestone/view/'.$milestoneid));
+        $this->pogo->html->addToNav($projectactor->getActor()->getFirstName().' '.$projectactor->getActor()->getName(), site_url('/projectactor/view/'.$projectactorid));
 
         $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
-        $this->pogo->html->view('milestone/milestone.php', array('project'=>$project, 'milestone'=>$milestone));
-
+        $this->pogo->html->view('projectactor/projectactor.php', array('project'=>$project, 'actors'=>$actors, 'projectactor'=>$projectactor));
 	}
 
     public function Add($projectid) {
         //Verify authorization
-        $this->pogo->auth->checkRole('MilestoneEditor');
+        $this->pogo->auth->checkRole('ProjectActorEditor');
 
         //get linked project or exit if not linked to project
         ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
 
-        //generate new Milestone
-        $milestone = new PoGo\Milestone();
-        $milestone->setDueDate('+1 days');
+        //get list of actors
+        $actors = PoGo\ActorQuery::create('Actor')->select(array('Id','Label'))->withColumn('CONCAT(Actor.FirstName, \' \', Actor.Name)','Label')->orderByFirstName()->orderByName()->find()->toArray();
+        array_unshift($actors, array('Id'=>0, 'Label'=>'---'));
+        $actors = json_encode($actors , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        //generate new projectactor
+        $projectactor = new PoGo\ProjectActor();
+        $projectactor->setProjectId($project->getId())
+            ->setActorId(0);
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
         $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
-        $this->pogo->html->addToNav(lang('milestone_add_a_1'), site_url('/milestone/add/'.$project->getId()));
+        $this->pogo->html->addToNav(lang('projectactor_add_a_1'), site_url('/projectactor/add/'.$project->getId()));
 
         $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
-        $this->pogo->html->view('milestone/milestone.php', array('project'=>$project, 'milestone'=>$milestone));
-
+        $this->pogo->html->view('projectactor/projectactor.php', array('project'=>$project, 'actors'=>$actors, 'projectactor'=>$projectactor));
     }
 
     public function Post() {
         //Verify authorization
-        $this->pogo->auth->checkRole('MilestoneEditor');
+        $this->pogo->auth->checkRole('ProjectActorEditor');
 
         //Set form validation rules
         $this->load->library('form_validation');
         $this->form_validation->set_rules('ProjectId', 'lang:identifier', 'required|integer');
-        $this->form_validation->set_rules('Name', 'lang:milestone_view_p_4', 'required');
-        $this->form_validation->set_rules('Description', 'lang:milestone_view_p_5', 'required');
-        $this->form_validation->set_rules('DueDate', 'lang:milestone_view_p_7', 'required|callback_date_check');
+        $this->form_validation->set_rules('ActorId', 'lang:projectactor_view_p_4', 'required|integer');
+        $this->form_validation->set_rules('Role', 'lang:projectactor_view_p_5', 'required');
 
         if ($this->form_validation->run() == FALSE) {
             $this->pogo->html->error(validation_errors());
@@ -99,24 +107,19 @@ class Milestone extends CI_Controller {
                 //get linked project or exit if not linked to project
                 ($project = $this->pogo->getLinkedProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
-                //Reformat Dates and Index
-                foreach (array('DueDate') as $field) {
-                    if (isset($inputdata[$field]) && !empty($inputdata[$field])) $inputdata[$field] = DateTime::createFromFormat ('d/m/Y', $inputdata[$field]);
-                }
-
-                //Try to retrieve existing milestone
-                $milestone = PoGo\MilestoneQuery::create()
+                //Try to retrieve existing projectactor
+                $projectactor = PoGo\ProjectActorQuery::create()
                     ->filterById($inputdata['Id'])
                     ->findOneOrCreate();
 
-                //Load input data into milestone and save
-                $milestone->fromArray($inputdata);
+                //Load input data into projectactor and save
+                $projectactor->fromArray($inputdata);
 
                 //Save
-                $milestone->save();
+                $projectactor->save();
 
                 //send success
-                $this->pogo->html->success($milestone->getId());
+                $this->pogo->html->success($projectactor->getId());
             }catch(Exception $e) {
                 //send error
                 $this->pogo->html->error($e->getMessage());
@@ -124,25 +127,23 @@ class Milestone extends CI_Controller {
         }
     }
 
-    public function Delete($milestoneid){
+    public function Delete($projectactorid){
+        //TODO: réassocier tous les objects liés..
+        
         //Verify authorization
-        $this->pogo->auth->checkRole('MilestoneEditor');
+        $this->pogo->auth->checkRole('ProjectActorEditor');
 
-        //get milestone or exit if not linked to project
-        ($milestone = PoGo\MilestoneQuery::create()->findPk($milestoneid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
+        //get projectactor or exit if not linked to project
+        ($projectactor = PoGo\ProjectActorQuery::create()->findPk($projectactorid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->getLinkedProject($milestone->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+        ($project = $this->pogo->getLinkedProject($projectactor->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
-        //delete milestone
-        $milestone->delete();
+        //delete projectactor
+        $projectactor->delete();
 
         //return success
         $this->pogo->html->success();
-    }
-
-    public function Date_check($date) {
-        return $this->pogo->Date_check($date);
     }
 }
 

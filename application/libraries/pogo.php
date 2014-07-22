@@ -56,6 +56,17 @@ class PoGo {
         $this->auth->init();
     }
 
+    /* Linked objects */
+
+    public function getLinkedProject($projectid){
+        //Load linked projects
+        return PoGo\ProjectQuery::create()
+            ->useProjectActorQuery()
+            ->filterByActorId($this->codeigniter->session->userdata('actor_id'))
+            ->endUse()
+            ->findPk($projectid);
+    }
+
     public function Json_check($json) {
         return ((json_decode($json) == null) ? false : true);
     }
@@ -88,6 +99,17 @@ class PoGo {
 
         if ($d1 == false || $d2 == false) return false;
         return ($d1->diff($d2)->invert || $d1 == $d2) ? true : false;
+    }
+    public function ProjectCode_check($projectcode) {
+        return ((preg_match("/^[A-Z]{4}\.[0-9]{4}\.[A-Z]{4}$/", $projectcode) == 1) ? true : false);
+    }
+    public function IsUnique_ProjectCode_check($projectcode, $projectid) {
+        $codeexists = PoGo\ProjectQuery::create()
+            ->filterById($projectid, Criteria::NOT_EQUAL)
+            ->filterByCode($projectcode)
+            ->count();
+
+        return (($codeexists) ? false : true);
     }
     //Test for empty value
     public function is_empty($var) {

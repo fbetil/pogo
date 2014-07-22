@@ -32,7 +32,7 @@
 		<column name="actorid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
 		<column name="actorfirstname" type="varchar" size="50" required="true" phpName="FirstName"/>
 		<column name="actorname" type="varchar" size="50" required="true" phpName="Name"/>
-		<column name="actorentity" type="varchar" size="255" required="true" phpName="Entity"/>
+		<column name="actororganization" type="varchar" size="255" required="true" phpName="Organization"/>
 	</table>
 
 	<!-- File -->

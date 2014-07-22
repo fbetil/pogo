@@ -38,7 +38,18 @@ class Task extends CI_Controller {
         ($task = PoGo\TaskQuery::create()->findPk($taskid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($task->getProjectId())) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($task->getProjectId())) ?: $this->pogo->html->e401();
+
+        //get actors
+        $taskactors = $taskactorsnames = $taskactorsall = array();
+        foreach ($task->getTaskActors() as $taskactor) {
+            $actor = $taskactor->getActor();
+            $taskactors[] = (string) $actor->getId();
+            $taskactorsnames[] = $actor->getFirstName().' '.$actor->getName();
+        }
+        $taskactors = json_encode($taskactors , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $taskactorsnames = (implode(', ', $taskactorsnames)) ?: lang('task_view_p_9') ;
+        $taskactorsall = json_encode(PoGo\ActorQuery::create('Actor')->select(array('Id','Label'))->withColumn('CONCAT(Actor.FirstName, \' \', Actor.Name)','Label')->filterById(PoGo\ProjectActorQuery::create()->select('ActorId')->filterByProjectId($project->getId())->find()->toArray())->orderByFirstName()->orderByName()->find()->toArray() , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
@@ -49,7 +60,7 @@ class Task extends CI_Controller {
         $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
-        $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task));
+        $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task, 'taskactors'=>$taskactors, 'taskactorsnames'=>$taskactorsnames, 'taskactorsall'=>$taskactorsall));
 
 	}
 
@@ -58,13 +69,24 @@ class Task extends CI_Controller {
         $this->pogo->auth->checkRole('TaskEditor');
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($projectid)) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
 
         //generate new Task
         $task = new PoGo\Task();
         $task->setProgress(0)
             ->setStartDate('now')
             ->setDueDate('+1 days');
+
+        //get actors
+        $taskactors = $taskactorsnames = $taskactorsall = array();
+        foreach ($task->getTaskActors() as $taskactor) {
+            $actor = $taskactor->getActor();
+            $taskactors[] = (string) $actor->getId();
+            $taskactorsnames[] = $actor->getFirstName().' '.$actor->getName();
+        }
+        $taskactors = json_encode($taskactors , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $taskactorsnames = (implode(', ', $taskactorsnames)) ?: lang('task_view_p_9') ;
+        $taskactorsall = json_encode(PoGo\ActorQuery::create('Actor')->select(array('Id','Label'))->withColumn('CONCAT(Actor.FirstName, \' \', Actor.Name)','Label')->filterById(PoGo\ProjectActorQuery::create()->select('ActorId')->filterByProjectId($project->getId())->find()->toArray())->orderByFirstName()->orderByName()->find()->toArray() , JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
@@ -75,7 +97,7 @@ class Task extends CI_Controller {
         $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
-        $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task));
+        $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task, 'taskactors'=>$taskactors, 'taskactorsnames'=>$taskactorsnames, 'taskactorsall'=>$taskactorsall));
 
     }
 
@@ -91,6 +113,7 @@ class Task extends CI_Controller {
         $this->form_validation->set_rules('Description', 'lang:task_view_p_5', 'required');
         $this->form_validation->set_rules('StartDate', 'lang:task_view_p_6', 'required|callback_date_check');
         $this->form_validation->set_rules('DueDate', 'lang:task_view_p_7', 'required|callback_dategreaterthan_check['.$this->input->post('StartDate').']');
+        $this->form_validation->set_rules('Actors', 'lang:task_view_p_10', 'required|is_array');
 
         if ($this->form_validation->run() == FALSE) {
             $this->pogo->html->error(validation_errors());
@@ -101,7 +124,7 @@ class Task extends CI_Controller {
                 if($inputdata['Id'] == '') $inputdata['Id'] = null;
 
                 //get linked project or exit if not linked to project
-                ($project = $this->pogo->auth->getProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
+                ($project = $this->pogo->getLinkedProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
                 
                 //Reformat Dates and Index
                 foreach (array('StartDate','DueDate') as $field) {
@@ -118,6 +141,17 @@ class Task extends CI_Controller {
 
                 //Save
                 $task->save();
+
+                //Update actors
+                PoGo\TaskActorQuery::create()->filterByTaskId($task->getId())->delete();
+                $actors = array_filter($inputdata['Actors']);
+                foreach ($actors as $actorid) {
+                    //check if actor exists and is linked to project
+                    if (!PoGo\ProjectActorQuery::create()->select('ActorId')->filterByProjectId($project->getId())->filterByActorId($actorid)->count()) continue;
+
+                    $taskactor = new PoGo\TaskActor();
+                    $taskactor->setTaskId($task->getId())->setActorId($actorid)->save();
+                }
 
                 //send success
                 $this->pogo->html->success($task->getId());
@@ -136,7 +170,7 @@ class Task extends CI_Controller {
         ($task = PoGo\TaskQuery::create()->findPk($taskid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($task->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+        ($project = $this->pogo->getLinkedProject($task->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //delete task
         $task->delete();

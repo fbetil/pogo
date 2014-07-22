@@ -50,7 +50,7 @@ CREATE TABLE `actor`
     `actorid` INTEGER NOT NULL AUTO_INCREMENT,
     `actorfirstname` VARCHAR(50) NOT NULL,
     `actorname` VARCHAR(50) NOT NULL,
-    `actorentity` VARCHAR(255) NOT NULL,
+    `actororganization` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`actorid`)
 ) ENGINE=MyISAM;
 

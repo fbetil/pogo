@@ -28,18 +28,12 @@
 
 {extends file="layout.php"}
 {strip}
-{block name="title"}{lang('app_name')} - {lang('dashboard_home_title')}{/block}
+{block name="title"}{lang('app_name')} - {lang('project_index_h_1')}{/block}
 {block name="page"}
-	<!-- Welcome -->
-	<section id="welcome" class="mts mbm">
-		<p class="h5-like"><i class="mrs fam fam_application_view_tile"></i>{lang('dashboard_home_h_1')}</p>
-		<p>{lang('dashboard_home_p_1')}</p>
-	</section>
-
 	<!-- Projects -->
 	<section id="projects" class="mts mbm">
-		<p class="h5-like"><i class="mrs fam fam_briefcase"></i>{lang('dashboard_home_h_2')}
-			{if isset($user_roles['ProjectEditor'])}<a class="right mrs" href="{$url_index}/project/add" title="{lang('dashboard_home_a_1')}"><i class="fam fam_add"></i></a>{/if}
+		<p class="h5-like"><i class="mrs fam fam_briefcase"></i>{lang('project_index_h_2')}
+			{if isset($user_roles['ProjectEditor'])}<a class="right mrs" href="{$url_index}/project/add" title="{lang('project_index_a_1')}"><i class="fam fam_add"></i></a>{/if}
 		</p>
 		<ul class="unstyled">
 		{foreach from=$projects item=project}
@@ -47,23 +41,13 @@
 				[{$project->getCode()}]
 				<div class="mls inbl">{$project->getName()}</div>
 				<div class="inbl list_actions right">
-					{if isset($user_roles['ProjectEditor'])}<a href="javascript:void(0)" onclick="ajax('/project/delete/{$project->getId()}');" title="{lang('dashboard_home_a_2')}"><i class="fam fam_delete"></i></a>{/if}
+					{if isset($user_roles['ProjectEditor'])}<a href="javascript:void(0)" onclick="ajax('/project/delete/{$project->getId()}');" title="{lang('project_index_a_2')}"><i class="fam fam_delete"></i></a>{/if}
 				</div>
 			</li>
 		{foreachelse}
-			<li class="small"><i>{lang('dashboard_home_p_2')}</i></li>
+			<li class="small"><i>{lang('project_index_p_1')}</i></li>
 		{/foreach}
 		</ul>
-	</section>
-
-	<!-- Manage -->
-	<section id="manage" class="mts mbm">
-		<p class="h5-like"><i class="mrs fam fam_color_swatch"></i>{lang('dashboard_home_h_3')}</p>
-	</section>
-
-	<!-- Administration -->
-	<section id="administration" class="mts mbm">
-		<p class="h5-like"><i class="mrs fam fam_plugin"></i>{lang('dashboard_home_h_4')}</p>
 	</section>
 {/block}
 {/strip}

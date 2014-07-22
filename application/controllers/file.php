@@ -38,7 +38,7 @@ class File extends CI_Controller {
         ($file = PoGo\FileQuery::create()->findPk($fileid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($file->getProjectId())) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($file->getProjectId())) ?: $this->pogo->html->e401();
 
         //generate nav & menu
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
@@ -61,7 +61,7 @@ class File extends CI_Controller {
         ($file = PoGo\FileQuery::create()->findPk($fileid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($file->getProjectId())) ?: $this->pogo->html->e401();
+        ($project = $this->pogo->getLinkedProject($file->getProjectId())) ?: $this->pogo->html->e401();
 
         //send to browser
         $this->pogo->html->file($file->getName(), $file->getMimeType(), $file->getContent(), $download);
@@ -85,7 +85,7 @@ class File extends CI_Controller {
                 if($inputdata['Id'] == '') $inputdata['Id'] = null;
 
                 //get linked project or exit if not linked to project
-                ($project = $this->pogo->auth->getProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
+                ($project = $this->pogo->getLinkedProject($inputdata['ProjectId'])) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
                 //Try to retrieve existing file
                 $file = PoGo\FileQuery::create()
@@ -125,7 +125,7 @@ class File extends CI_Controller {
         ($file = PoGo\FileQuery::create()->findPk($fileid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //get linked project or exit if not linked to project
-        ($project = $this->pogo->auth->getProject($file->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+        ($project = $this->pogo->getLinkedProject($file->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //file
         $file->delete();
@@ -149,7 +149,7 @@ class File extends CI_Controller {
         }else{
             try{
                 //get linked project or exit if not linked to project
-                ($project = $this->pogo->auth->getProject($this->input->post('ProjectId'))) ?: $this->pogo->html->error(lang('error_not_allowed'));
+                ($project = $this->pogo->getLinkedProject($this->input->post('ProjectId'))) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
                 //read file info
                 $filesize = filesize($_FILES["File"]["tmp_name"]);

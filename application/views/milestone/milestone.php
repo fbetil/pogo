@@ -41,7 +41,8 @@
 	<!-- Milestone details -->
 	<section id="milestone" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_timeline_marker"></i>{lang('milestone_view_h_2')}
-			{if isset($user_roles['MilestoneEditor'])}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('milestone')" title="{lang('milestone_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
+			{if isset($user_roles['MilestoneEditor']) && !$milestone->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="ajax('/milestone/delete/{$milestone->getId()}', '{$url_index}/project/view/{$project->getId()}');" title="{lang('milestone_view_a_2')}"><i class="fam fam_delete"></i></a>{/if}
+			{if isset($user_roles['MilestoneEditor']) && !$milestone->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('milestone')" title="{lang('milestone_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
 		</p>
 		<div data-eip-name="milestone" data-eip-url="{$url_index}/milestone/post" data-eip-label="{if $milestone->isNew()}{sprintf(lang('creation_in_progress'), lang('milestone_add_p_1'))|escape}{else}{sprintf(lang('modification_in_progress'), $milestone->getName())|escape}{/if}" >
 			<span data-eip-field-name="Id" data-eip-field-type="hidden" data-eip-field-value="{$milestone->getId()}"></span>

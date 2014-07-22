@@ -74,10 +74,10 @@ abstract class BaseActor extends BaseObject implements Persistent
     protected $actorname;
 
     /**
-     * The value for the actorentity field.
+     * The value for the actororganization field.
      * @var        string
      */
-    protected $actorentity;
+    protected $actororganization;
 
     /**
      * @var        PropelObjectCollection|ProjectActor[] Collection to store aggregation of ProjectActor objects.
@@ -190,13 +190,13 @@ abstract class BaseActor extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [actorentity] column value.
+     * Get the [actororganization] column value.
      *
      * @return string
      */
-    public function getEntity()
+    public function getOrganization()
     {
-        return $this->actorentity;
+        return $this->actororganization;
     }
 
     /**
@@ -263,25 +263,25 @@ abstract class BaseActor extends BaseObject implements Persistent
     } // setName()
 
     /**
-     * Set the value of [actorentity] column.
+     * Set the value of [actororganization] column.
      *
      * @param string $v new value
      * @return Actor The current object (for fluent API support)
      */
-    public function setEntity($v)
+    public function setOrganization($v)
     {
         if ($v !== null && is_numeric($v)) {
             $v = (string) $v;
         }
 
-        if ($this->actorentity !== $v) {
-            $this->actorentity = $v;
-            $this->modifiedColumns[] = ActorPeer::ACTORENTITY;
+        if ($this->actororganization !== $v) {
+            $this->actororganization = $v;
+            $this->modifiedColumns[] = ActorPeer::ACTORORGANIZATION;
         }
 
 
         return $this;
-    } // setEntity()
+    } // setOrganization()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -318,7 +318,7 @@ abstract class BaseActor extends BaseObject implements Persistent
             $this->actorid = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->actorfirstname = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->actorname = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
-            $this->actorentity = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+            $this->actororganization = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -643,8 +643,8 @@ abstract class BaseActor extends BaseObject implements Persistent
         if ($this->isColumnModified(ActorPeer::ACTORNAME)) {
             $modifiedColumns[':p' . $index++]  = '`actorname`';
         }
-        if ($this->isColumnModified(ActorPeer::ACTORENTITY)) {
-            $modifiedColumns[':p' . $index++]  = '`actorentity`';
+        if ($this->isColumnModified(ActorPeer::ACTORORGANIZATION)) {
+            $modifiedColumns[':p' . $index++]  = '`actororganization`';
         }
 
         $sql = sprintf(
@@ -666,8 +666,8 @@ abstract class BaseActor extends BaseObject implements Persistent
                     case '`actorname`':
                         $stmt->bindValue($identifier, $this->actorname, PDO::PARAM_STR);
                         break;
-                    case '`actorentity`':
-                        $stmt->bindValue($identifier, $this->actorentity, PDO::PARAM_STR);
+                    case '`actororganization`':
+                        $stmt->bindValue($identifier, $this->actororganization, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -853,7 +853,7 @@ abstract class BaseActor extends BaseObject implements Persistent
                 return $this->getName();
                 break;
             case 3:
-                return $this->getEntity();
+                return $this->getOrganization();
                 break;
             default:
                 return null;
@@ -887,7 +887,7 @@ abstract class BaseActor extends BaseObject implements Persistent
             $keys[0] => $this->getId(),
             $keys[1] => $this->getFirstName(),
             $keys[2] => $this->getName(),
-            $keys[3] => $this->getEntity(),
+            $keys[3] => $this->getOrganization(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collProjectActors) {
@@ -949,7 +949,7 @@ abstract class BaseActor extends BaseObject implements Persistent
                 $this->setName($value);
                 break;
             case 3:
-                $this->setEntity($value);
+                $this->setOrganization($value);
                 break;
         } // switch()
     }
@@ -978,7 +978,7 @@ abstract class BaseActor extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setFirstName($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setEntity($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setOrganization($arr[$keys[3]]);
     }
 
     /**
@@ -993,7 +993,7 @@ abstract class BaseActor extends BaseObject implements Persistent
         if ($this->isColumnModified(ActorPeer::ACTORID)) $criteria->add(ActorPeer::ACTORID, $this->actorid);
         if ($this->isColumnModified(ActorPeer::ACTORFIRSTNAME)) $criteria->add(ActorPeer::ACTORFIRSTNAME, $this->actorfirstname);
         if ($this->isColumnModified(ActorPeer::ACTORNAME)) $criteria->add(ActorPeer::ACTORNAME, $this->actorname);
-        if ($this->isColumnModified(ActorPeer::ACTORENTITY)) $criteria->add(ActorPeer::ACTORENTITY, $this->actorentity);
+        if ($this->isColumnModified(ActorPeer::ACTORORGANIZATION)) $criteria->add(ActorPeer::ACTORORGANIZATION, $this->actororganization);
 
         return $criteria;
     }
@@ -1059,7 +1059,7 @@ abstract class BaseActor extends BaseObject implements Persistent
     {
         $copyObj->setFirstName($this->getFirstName());
         $copyObj->setName($this->getName());
-        $copyObj->setEntity($this->getEntity());
+        $copyObj->setOrganization($this->getOrganization());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2374,7 +2374,7 @@ abstract class BaseActor extends BaseObject implements Persistent
         $this->actorid = null;
         $this->actorfirstname = null;
         $this->actorname = null;
-        $this->actorentity = null;
+        $this->actororganization = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

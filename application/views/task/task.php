@@ -41,7 +41,8 @@
 	<!-- Task details -->
 	<section id="task" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_script"></i>{lang('task_view_h_2')}
-			{if isset($user_roles['TaskEditor'])}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('task')" title="{lang('task_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
+			{if isset($user_roles['TaskEditor']) && !$task->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="ajax('/task/delete/{$task->getId()}', '{$url_index}/project/view/{$project->getId()}');" title="{lang('task_view_a_2')}"><i class="fam fam_script_delete"></i></a>{/if}
+			{if isset($user_roles['TaskEditor']) && !$task->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('task')" title="{lang('task_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
 		</p>
 		<div data-eip-name="task" data-eip-url="{$url_index}/task/post" data-eip-label="{if $task->isNew()}{sprintf(lang('creation_in_progress'), lang('task_add_p_1'))|escape}{else}{sprintf(lang('modification_in_progress'), $task->getName())|escape}{/if}" >
 			<span data-eip-field-name="Id" data-eip-field-type="hidden" data-eip-field-value="{$task->getId()}"></span>
@@ -61,25 +62,16 @@
 			<p><b>{lang('task_view_p_7')} : </b>
 				<span data-eip-field-name="DueDate" data-eip-field-type="date" data-eip-field-value="{$task->getDueDate('d/m/Y')}" data-eip-field-class="required">{$task->getDueDate('d/m/Y')}</span>
 			</p>
+			<p><b>{lang('task_view_p_10')} : </b>
+				<span data-eip-field-name="Actors" data-eip-field-type="multiselect" data-eip-field-options="{$taskactorsall|escape}" data-eip-field-value="{$taskactors|escape}" >{$taskactorsnames}</span>
+			</p>
 		    <span data-eip-field-name="csrf_test_name" data-eip-field-type="hidden" data-eip-field-value="{$csrf_hash}"></span>
-	</section>
-
-	<!-- Task actors -->
-	<section id="actors" class="mts mbm">
-		<p class="h5-like"><i class="mrs fam fam_user_gray"></i>{lang('task_view_h_3')}</p>
-		<ul class="unstyled">
-		{foreach from=$task->getTaskActors() item=taskactor}
-			<li>{$taskactor->getActor()->getFirstName()} {$taskactor->getActor()->getName()}</li>
-		{foreachelse}
-			<li class="small"><i>{lang('task_view_p_9')}</i></li>
-		{/foreach}
-		</ul>
 	</section>
 
 	{if $task->isNew()}
 		<script>
 			/*Start eip*/
-			$(document).ready(function() { eipStart('task', '{$url_index}/task/view/$id', '{$url_index}/projects/view/{$project->getId()}'); });
+			$(document).ready(function() { eipStart('task', '{$url_index}/task/view/$id', '{$url_index}/project/view/{$project->getId()}'); });
 		</script>
 	{/if}
 {/block}

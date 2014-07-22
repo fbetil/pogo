@@ -262,16 +262,5 @@ class PoGoAuth {
         $this->setUserProperty($this->codeigniter->session->userdata('user_id'), 'history', $history);
     }
 
-    /* Linked objects */
-
-    public function getProject($projectid){
-        //Load linked projects
-        return PoGo\ProjectQuery::create()
-            ->useProjectActorQuery()
-            ->filterByActorId($this->codeigniter->session->userdata('actor_id'))
-            ->endUse()
-            ->findPk($projectid);
-    }
-
 }
         

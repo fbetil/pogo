@@ -41,7 +41,8 @@
 	<!-- File details -->
 	<section id="file" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_folder_page"></i>{lang('file_view_h_2')}
-			{if isset($user_roles['FileEditor'])}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('file')" title="{lang('file_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
+			{if isset($user_roles['FileEditor']) && !$file->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="ajax('/file/delete/{$file->getId()}', '{$url_index}/project/view/{$project->getId()}');" title="{lang('file_view_a_2')}"><i class="fam fam_page_delete"></i></a>{/if}
+			{if isset($user_roles['FileEditor']) && !$file->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('file')" title="{lang('file_view_a_1')}"><i class="fam fam_pencil"></i></a>{/if}
 		</p>
 		<div data-eip-name="file" data-eip-url="{$url_index}/file/post" data-eip-label="{sprintf(lang('modification_in_progress'), $file->getName())|escape}" >
 			<span data-eip-field-name="Id" data-eip-field-type="hidden" data-eip-field-value="{$file->getId()}"></span>

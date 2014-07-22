@@ -61,7 +61,7 @@ function ajax(url, onSuccess, block, method, data){
                     break;
                 case 'error':
                     $.unblockUI();
-                    alert(data.error);
+                    alert(data.message);
                     break;
             }
         },
@@ -95,7 +95,7 @@ function uploadSend(formData){
         success: function(data){
         	var json = jQuery.parseJSON(data);
         	if (json.result == 'error') {
-                alert(json.error);
+                alert(json.message);
             }else{
                 location.reload(true);
             }
@@ -151,7 +151,7 @@ function eipStart(eipname, onSuccess, onCancel){
             case 'select':
             case 'multiselect':
                 var html = field_append_before+'<select name="'+((field_type == 'multiselect')?field_name+'[]':field_name)+'" class="eip_field_common '+field_class+'" style="'+field_style+'" '+((field_type == 'multiselect')?'multiple="multiple"':'')+'>';
-                var options = jQuery.parseJSON($(this).attr('data-field-options'));
+                var options = jQuery.parseJSON($(this).attr('data-eip-field-options'));
                 if (field_type == 'multiselect') var field_values = jQuery.parseJSON(field_value);
                 $(options).each(function(){
                     html += '<option value="'+$(this).attr('Id')+'" ';
@@ -213,7 +213,8 @@ function eipSend(eipname, onSuccess){
     var data = {};
     data['form'] = eipname;
     $(eip).find('[data-eip-field-name]').each(function(){
-        var input = $(this).find('[name='+$(this).attr('data-eip-field-name')+']');
+        var inputname = ($(this).attr('data-eip-field-type') == 'multiselect') ? $(this).attr('data-eip-field-name')+'[]' : $(this).attr('data-eip-field-name');
+        var input = $(this).find('[name="'+inputname+'"]');
         data[$(input).attr('name')] = $(input).val();
     });
 

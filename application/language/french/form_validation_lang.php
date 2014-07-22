@@ -57,3 +57,5 @@ $lang['alpha_extended_check']	= "Le champ \"%s\" doit contenir uniquement des ca
 $lang['alpha_extended2_check']	= "Le champ \"%s\" doit contenir uniquement des caractères alphabétiques et underscores.";
 $lang['date_check']			= "Le champ \"%s\" doit contenir une date au format 'dd/mm/aaaa'.";
 $lang['dategreaterthan_check']	= "La date \"%s\" doit être supérieure à \"%s\".";
+$lang['projectcode_check']	= "Le code de project \"%s\" ne correspond pas au format 'POGO.YYMM.WXYZ'.";
+$lang['isunique_projectcode_check']	= "Le code de project \"%s\" est déjà utilisé par un autre projet.";

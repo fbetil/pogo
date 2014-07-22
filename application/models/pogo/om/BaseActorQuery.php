@@ -29,12 +29,12 @@ use PoGo\User;
  * @method ActorQuery orderById($order = Criteria::ASC) Order by the actorid column
  * @method ActorQuery orderByFirstName($order = Criteria::ASC) Order by the actorfirstname column
  * @method ActorQuery orderByName($order = Criteria::ASC) Order by the actorname column
- * @method ActorQuery orderByEntity($order = Criteria::ASC) Order by the actorentity column
+ * @method ActorQuery orderByOrganization($order = Criteria::ASC) Order by the actororganization column
  *
  * @method ActorQuery groupById() Group by the actorid column
  * @method ActorQuery groupByFirstName() Group by the actorfirstname column
  * @method ActorQuery groupByName() Group by the actorname column
- * @method ActorQuery groupByEntity() Group by the actorentity column
+ * @method ActorQuery groupByOrganization() Group by the actororganization column
  *
  * @method ActorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ActorQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -65,12 +65,12 @@ use PoGo\User;
  *
  * @method Actor findOneByFirstName(string $actorfirstname) Return the first Actor filtered by the actorfirstname column
  * @method Actor findOneByName(string $actorname) Return the first Actor filtered by the actorname column
- * @method Actor findOneByEntity(string $actorentity) Return the first Actor filtered by the actorentity column
+ * @method Actor findOneByOrganization(string $actororganization) Return the first Actor filtered by the actororganization column
  *
  * @method array findById(int $actorid) Return Actor objects filtered by the actorid column
  * @method array findByFirstName(string $actorfirstname) Return Actor objects filtered by the actorfirstname column
  * @method array findByName(string $actorname) Return Actor objects filtered by the actorname column
- * @method array findByEntity(string $actorentity) Return Actor objects filtered by the actorentity column
+ * @method array findByOrganization(string $actororganization) Return Actor objects filtered by the actororganization column
  *
  * @package    propel.generator.pogo.om
  */
@@ -174,7 +174,7 @@ abstract class BaseActorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `actorid`, `actorfirstname`, `actorname`, `actorentity` FROM `actor` WHERE `actorid` = :p0';
+        $sql = 'SELECT `actorid`, `actorfirstname`, `actorname`, `actororganization` FROM `actor` WHERE `actorid` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -364,32 +364,32 @@ abstract class BaseActorQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the actorentity column
+     * Filter the query on the actororganization column
      *
      * Example usage:
      * <code>
-     * $query->filterByEntity('fooValue');   // WHERE actorentity = 'fooValue'
-     * $query->filterByEntity('%fooValue%'); // WHERE actorentity LIKE '%fooValue%'
+     * $query->filterByOrganization('fooValue');   // WHERE actororganization = 'fooValue'
+     * $query->filterByOrganization('%fooValue%'); // WHERE actororganization LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $entity The value to use as filter.
+     * @param     string $organization The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ActorQuery The current query, for fluid interface
      */
-    public function filterByEntity($entity = null, $comparison = null)
+    public function filterByOrganization($organization = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($entity)) {
+            if (is_array($organization)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $entity)) {
-                $entity = str_replace('*', '%', $entity);
+            } elseif (preg_match('/[\%\*]/', $organization)) {
+                $organization = str_replace('*', '%', $organization);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(ActorPeer::ACTORENTITY, $entity, $comparison);
+        return $this->addUsingAlias(ActorPeer::ACTORORGANIZATION, $organization, $comparison);
     }
 
     /**
