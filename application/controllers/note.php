@@ -46,7 +46,7 @@ class Note extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav($note->getName(), site_url('/note/view/'.$noteid));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('note/note.php', array('project'=>$project, 'note'=>$note));
@@ -71,7 +71,7 @@ class Note extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav(lang('note_add_a_1'), site_url('/note/add/'.$project->getId()));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('note/note.php', array('project'=>$project, 'note'=>$note));

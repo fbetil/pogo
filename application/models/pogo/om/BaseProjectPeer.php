@@ -36,13 +36,13 @@ abstract class BaseProjectPeer
     const TM_CLASS = 'ProjectTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the projectid field */
     const PROJECTID = 'project.projectid';
@@ -55,15 +55,6 @@ abstract class BaseProjectPeer
 
     /** the column name for the projectdescription field */
     const PROJECTDESCRIPTION = 'project.projectdescription';
-
-    /** the column name for the projectstartdate field */
-    const PROJECTSTARTDATE = 'project.projectstartdate';
-
-    /** the column name for the projectduedate field */
-    const PROJECTDUEDATE = 'project.projectduedate';
-
-    /** the column name for the projectenddate field */
-    const PROJECTENDDATE = 'project.projectenddate';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -84,12 +75,12 @@ abstract class BaseProjectPeer
      * e.g. ProjectPeer::$fieldNames[ProjectPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Description', 'StartDate', 'DueDate', 'EndDate', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'description', 'startDate', 'dueDate', 'endDate', ),
-        BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJECTID, ProjectPeer::PROJECTCODE, ProjectPeer::PROJECTNAME, ProjectPeer::PROJECTDESCRIPTION, ProjectPeer::PROJECTSTARTDATE, ProjectPeer::PROJECTDUEDATE, ProjectPeer::PROJECTENDDATE, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('PROJECTID', 'PROJECTCODE', 'PROJECTNAME', 'PROJECTDESCRIPTION', 'PROJECTSTARTDATE', 'PROJECTDUEDATE', 'PROJECTENDDATE', ),
-        BasePeer::TYPE_FIELDNAME => array ('projectid', 'projectcode', 'projectname', 'projectdescription', 'projectstartdate', 'projectduedate', 'projectenddate', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Code', 'Name', 'Description', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'code', 'name', 'description', ),
+        BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJECTID, ProjectPeer::PROJECTCODE, ProjectPeer::PROJECTNAME, ProjectPeer::PROJECTDESCRIPTION, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('PROJECTID', 'PROJECTCODE', 'PROJECTNAME', 'PROJECTDESCRIPTION', ),
+        BasePeer::TYPE_FIELDNAME => array ('projectid', 'projectcode', 'projectname', 'projectdescription', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -99,12 +90,12 @@ abstract class BaseProjectPeer
      * e.g. ProjectPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Description' => 3, 'StartDate' => 4, 'DueDate' => 5, 'EndDate' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, 'startDate' => 4, 'dueDate' => 5, 'endDate' => 6, ),
-        BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJECTID => 0, ProjectPeer::PROJECTCODE => 1, ProjectPeer::PROJECTNAME => 2, ProjectPeer::PROJECTDESCRIPTION => 3, ProjectPeer::PROJECTSTARTDATE => 4, ProjectPeer::PROJECTDUEDATE => 5, ProjectPeer::PROJECTENDDATE => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('PROJECTID' => 0, 'PROJECTCODE' => 1, 'PROJECTNAME' => 2, 'PROJECTDESCRIPTION' => 3, 'PROJECTSTARTDATE' => 4, 'PROJECTDUEDATE' => 5, 'PROJECTENDDATE' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('projectid' => 0, 'projectcode' => 1, 'projectname' => 2, 'projectdescription' => 3, 'projectstartdate' => 4, 'projectduedate' => 5, 'projectenddate' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Code' => 1, 'Name' => 2, 'Description' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'code' => 1, 'name' => 2, 'description' => 3, ),
+        BasePeer::TYPE_COLNAME => array (ProjectPeer::PROJECTID => 0, ProjectPeer::PROJECTCODE => 1, ProjectPeer::PROJECTNAME => 2, ProjectPeer::PROJECTDESCRIPTION => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('PROJECTID' => 0, 'PROJECTCODE' => 1, 'PROJECTNAME' => 2, 'PROJECTDESCRIPTION' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('projectid' => 0, 'projectcode' => 1, 'projectname' => 2, 'projectdescription' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -182,17 +173,11 @@ abstract class BaseProjectPeer
             $criteria->addSelectColumn(ProjectPeer::PROJECTCODE);
             $criteria->addSelectColumn(ProjectPeer::PROJECTNAME);
             $criteria->addSelectColumn(ProjectPeer::PROJECTDESCRIPTION);
-            $criteria->addSelectColumn(ProjectPeer::PROJECTSTARTDATE);
-            $criteria->addSelectColumn(ProjectPeer::PROJECTDUEDATE);
-            $criteria->addSelectColumn(ProjectPeer::PROJECTENDDATE);
         } else {
             $criteria->addSelectColumn($alias . '.projectid');
             $criteria->addSelectColumn($alias . '.projectcode');
             $criteria->addSelectColumn($alias . '.projectname');
             $criteria->addSelectColumn($alias . '.projectdescription');
-            $criteria->addSelectColumn($alias . '.projectstartdate');
-            $criteria->addSelectColumn($alias . '.projectduedate');
-            $criteria->addSelectColumn($alias . '.projectenddate');
         }
     }
 

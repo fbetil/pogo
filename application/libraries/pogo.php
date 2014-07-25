@@ -56,14 +56,17 @@ class PoGo {
         $this->auth->init();
     }
 
-    /* Linked objects */
+
+    /* Core functions */
 
     public function getLinkedProject($projectid){
         //Load linked projects
-        return PoGo\ProjectQuery::create()
+        return PoGo\ProjectQuery::create('Project')
             ->useProjectActorQuery()
             ->filterByActorId($this->codeigniter->session->userdata('actor_id'))
             ->endUse()
+            ->withColumn('CalculateProjectProgress(Project.Id)', 'Progress')
+            ->withColumn('CalculateProjectProgressScore(Project.Id)', 'ProgressScore')
             ->findPk($projectid);
     }
 

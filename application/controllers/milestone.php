@@ -46,7 +46,7 @@ class Milestone extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav($milestone->getName(), site_url('/milestone/view/'.$milestoneid));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('milestone/milestone.php', array('project'=>$project, 'milestone'=>$milestone));
@@ -70,7 +70,7 @@ class Milestone extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav(lang('milestone_add_a_1'), site_url('/milestone/add/'.$project->getId()));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('milestone/milestone.php', array('project'=>$project, 'milestone'=>$milestone));

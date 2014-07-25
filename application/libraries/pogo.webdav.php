@@ -49,6 +49,7 @@ class PoGoWebdav {
 
         //get user
         $user = PoGo\UserQuery::create()->findOneByActorId($projectactor->getActorId());
+        $havetasks = false;
 
         $vcard = "BEGIN:VCARD\r\n";
         $vcard .= "VERSION:3.0\r\n";
@@ -57,7 +58,17 @@ class PoGoWebdav {
         $vcard .= "N;CHARSET=utf-8:".$projectactor->getActor()->getName().';'.$projectactor->getActor()->getFirstName()."\r\n";
         if ($user) $vcard .= "EMAIL;TYPE=work:".$user->getEmail()."\r\n";
         $vcard .= "ORG;CHARSET=utf-8:".$projectactor->getActor()->getOrganization()."\r\n";
-        $vcard .= "NOTE;CHARSET=utf-8:".sprintf(lang('webdav_projects_p_5'), $projectactor->getRole(),$projectactor->getProject()->getName())."\r\n";
+        $vcard .= "NOTE;CHARSET=utf-8:".sprintf(lang('webdav_projects_p_5'), $projectactor->getRole(),$projectactor->getProject()->getName());
+        foreach ($projectactor->getProject()->getTasks() as $task) {
+            foreach ($task->getTaskActors() as $taskactor) {
+                if($taskactor->getActorId() == $projectactor->getActorId()) {
+                    if (!$havetasks) $vcard .= "\\n\\n".lang('webdav_projects_p_6')."\\n";
+                    $vcard .= "   - ".$task->getName()."\\n";
+                    $havetasks = true;
+                } 
+            }
+        }
+        $vcard .= "\r\n";
         $vcard .= "UID:PROJECTACTOR".$projectactor->getId()."\r\n";
         $vcard .= "END:VCARD\r\n";
 
@@ -66,7 +77,11 @@ class PoGoWebdav {
 
     function icalendar($projectid){
         //Get project or exit
-        $project = PoGo\ProjectQuery::create()->findPk($projectid);
+        $project = PoGo\ProjectQuery::create('Project')
+            ->withColumn('CalculateProjectProgress(Project.Id)', 'Progress')
+            ->withColumn('CalculateProjectProgressScore(Project.Id)', 'ProgressScore')
+            ->filterById($projectid)
+            ->findOne();
         if (!$project) return "";
 
         $icalendar = "BEGIN:VCALENDAR\r\n";
@@ -75,18 +90,26 @@ class PoGoWebdav {
         $icalendar .= "URL:".site_url('/webdav/index/'.$project->getCode().'/'.urlencode(lang('webdav_projects_p_4')))."\r\n";
         $icalendar .= "NAME;CHARSET=utf-8:".$project->getName()."\r\n";
         $icalendar .= "X-WR-CALNAME;CHARSET=utf-8:".$project->getName()."\r\n";
-        $icalendar .= "DESCRIPTION;CHARSET=utf-8:".str_replace("\n", "\\n", $project->getDescription())."\r\n";
-        $icalendar .= "X-WR-CALDESC;CHARSET=utf-8:".str_replace("\n", "\\n", $project->getDescription())."\r\n";
+        $icalendar .= "DESCRIPTION;CHARSET=utf-8:".str_replace("\n", "\\n", $project->getDescription())."\\n\\n".sprintf(lang('webdav_projects_p_9'), $project->getProgress())."\r\n";
+        $icalendar .= "X-WR-CALDESC;CHARSET=utf-8:".str_replace("\n", "\\n", $project->getDescription())."\\n\\n".sprintf(lang('webdav_projects_p_9'), $project->getProgress())."\r\n";
         $icalendar .= "REFRESH-INTERVAL;VALUE=DURATION:PT6H\r\n";
 
         //Add tasks
         foreach ($project->getTasks() as $task) {
+            $haveactors = false;
+
             $icalendar .= "BEGIN:VEVENT\r\n";
             $icalendar .= "UID:TASK".$task->getId()."\r\n";
-            $icalendar .= "DTSTART:".$task->getStartDate('Ymd\T000000')."\r\n";
-            $icalendar .= "DTEND:".$task->getDueDate('Ymd\T235959')."\r\n";
+            $icalendar .= "DTSTART:".$task->getStartDate('Ymd\THis')."\r\n";
+            $icalendar .= "DTEND:".$task->getDueDate('Ymd\THis')."\r\n";
             $icalendar .= "SUMMARY;CHARSET=utf-8:".$task->getName()."\r\n";
-            $icalendar .= "DESCRIPTION;CHARSET=utf-8:".str_replace("\n", "\\n\r\n", $task->getDescription())."\r\n";
+            $icalendar .= "DESCRIPTION;CHARSET=utf-8:".str_replace("\n", "\\n", $task->getDescription());
+            foreach ($task->getTaskActors() as $taskactor) {
+                if (!$haveactors) $icalendar .= "\\n\\n".lang('webdav_projects_p_7')."\\n";
+                $icalendar .= "   - ".$taskactor->getActor()->getFirstName().' '.$taskactor->getActor()->getName()."\\n";
+                $haveactors = true;
+            }
+            $icalendar .= "\\n\\n".sprintf(lang('webdav_projects_p_8'), $task->getProgress())."\r\n";
             $icalendar .= "END:VEVENT\r\n";
         }
 
@@ -94,8 +117,8 @@ class PoGoWebdav {
         foreach ($project->getMilestones() as $milestone) {
             $icalendar .= "BEGIN:VEVENT\r\n";
             $icalendar .= "UID:MILESTONE".$milestone->getId()."\r\n";
-            $icalendar .= "DTSTART:".$milestone->getDueDate('Ymd\T000000')."\r\n";
-            $icalendar .= "DTEND:".$milestone->getDueDate('Ymd\T235959')."\r\n";
+            $icalendar .= "DTSTART:".$milestone->getDueDate('Ymd\THis')."\r\n";
+            $icalendar .= "DTEND:".$milestone->getDueDate('Ymd\THis')."\r\n";
             $icalendar .= "SUMMARY;CHARSET=utf-8:".$milestone->getName()."\r\n";
             $icalendar .= "DESCRIPTION;CHARSET=utf-8:".str_replace("\n", "\\n", $milestone->getDescription())."\r\n";
             $icalendar .= "END:VEVENT\r\n";

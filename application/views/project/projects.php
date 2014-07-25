@@ -34,12 +34,16 @@
 	<section id="projects" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_briefcase"></i>{lang('project_index_h_2')}
 			{if isset($user_roles['ProjectEditor'])}<a class="right mrs" href="{$url_index}/project/add" title="{lang('project_index_a_1')}"><i class="fam fam_add"></i></a>{/if}
+			<a class="right mrs" href="javascript:void(0)" title="{lang('dashboard_home_p_7')}"><i class="fam fam_information"></i></a>
 		</p>
 		<ul class="unstyled">
 		{foreach from=$projects item=project}
 			<li class="pointer list" onclick="window.location.href = '{$url_index}/project/view/{$project->getId()}'">
 				[{$project->getCode()}]
 				<div class="mls inbl">{$project->getName()}</div>
+				<div class="inbl right">
+					<span class="progressbar_holder" title="{sprintf(lang('project_index_p_2'), $project->getProgress(), $project->getProgressScore()|number_format:2)}"><span class="progressbar {$project->getProgressScore()|score_project}" style="width: {$project->getProgress()}%"></span></span>
+				</div>
 				<div class="inbl list_actions right">
 					{if isset($user_roles['ProjectEditor'])}<a href="javascript:void(0)" onclick="ajax('/project/delete/{$project->getId()}');" title="{lang('project_index_a_2')}"><i class="fam fam_delete"></i></a>{/if}
 				</div>

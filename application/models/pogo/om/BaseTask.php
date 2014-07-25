@@ -166,16 +166,16 @@ abstract class BaseTask extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getStartDate($format = '%x')
+    public function getStartDate($format = 'Y-m-d H:i:s')
     {
         if ($this->taskstartdate === null) {
             return null;
         }
 
-        if ($this->taskstartdate === '0000-00-00') {
+        if ($this->taskstartdate === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -206,16 +206,16 @@ abstract class BaseTask extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getDueDate($format = '%x')
+    public function getDueDate($format = 'Y-m-d H:i:s')
     {
         if ($this->taskduedate === null) {
             return null;
         }
 
-        if ($this->taskduedate === '0000-00-00') {
+        if ($this->taskduedate === '0000-00-00 00:00:00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -334,8 +334,8 @@ abstract class BaseTask extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->taskstartdate !== null || $dt !== null) {
-            $currentDateAsString = ($this->taskstartdate !== null && $tmpDt = new DateTime($this->taskstartdate)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            $currentDateAsString = ($this->taskstartdate !== null && $tmpDt = new DateTime($this->taskstartdate)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->taskstartdate = $newDateAsString;
                 $this->modifiedColumns[] = TaskPeer::TASKSTARTDATE;
@@ -357,8 +357,8 @@ abstract class BaseTask extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->taskduedate !== null || $dt !== null) {
-            $currentDateAsString = ($this->taskduedate !== null && $tmpDt = new DateTime($this->taskduedate)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            $currentDateAsString = ($this->taskduedate !== null && $tmpDt = new DateTime($this->taskduedate)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->taskduedate = $newDateAsString;
                 $this->modifiedColumns[] = TaskPeer::TASKDUEDATE;

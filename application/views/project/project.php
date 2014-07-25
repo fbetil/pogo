@@ -36,9 +36,11 @@
 		<p class="h5-like"><i class="mrs fam fam_briefcase"></i>{lang('project_view_h_1')}
 			{if isset($user_roles['ProjectEditor']) && !$project->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="ajax('/project/delete/{$project->getId()}', '{$url_index}/project');" title="{lang('project_view_a_7')}"><i class="fam fam_delete"></i></a>{/if}
 			{if isset($user_roles['ProjectEditor']) && !$project->isNew()}<a class="right mrs" href="javascript:void(0)" onclick="eipStart('project')" title="{lang('project_view_a_8')}"><i class="fam fam_pencil"></i></a>{/if}
+			{if isset($user_roles['WebdavViewer']) && !$project->isNew()}<a class="right mrs" href="javascript:void(0)" title="{sprintf(lang('project_view_p_9'), "{$url_index}/webdav/index/{$project->getCode()}")}"><i class="fam fam_folder_link"></i></a>{/if}
 		</p>
 		<div data-eip-name="project" data-eip-url="{$url_index}/project/post" data-eip-label="{if $project->isNew()}{sprintf(lang('creation_in_progress'), lang('project_add_p_1'))|escape}{else}{sprintf(lang('modification_in_progress'), $project->getName())|escape}{/if}" >
 			<span data-eip-field-name="Id" data-eip-field-type="hidden" data-eip-field-value="{$project->getId()}"></span>
+			<p><b>{lang('project_view_p_10')} :</b> <span class="inbl"><span class="progressbar_holder" title="{sprintf(lang('project_view_p_11'), "{if $project->isNew()}0{else}{$project->getProgress()}{/if}", "{if $project->isNew()}0{else}{$project->getProgressScore()|number_format:2}{/if}")}"><span class="progressbar {if $project->isNew()}bg-score-1{else}{$project->getProgressScore()|score_project}{/if}" style="width: {if $project->isNew()}0{else}{$project->getProgress()}{/if}%"></span></span></span>
 			<p><b>{lang('project_view_p_4')} : </b>
 				<span data-eip-field-name="Code" data-eip-field-value="{$project->getCode()}" data-eip-field-class="required">{$project->getCode()}</span>
 			</p>
@@ -58,7 +60,9 @@
 		<!-- Project calendar -->
 		{if isset($user_roles['ProjectViewer'])}
 		<section id="calendar" class="mts mbm">
-			<p class="h5-like"><i class="mrs fam fam_calendar"></i>{lang('project_view_h_2')}</p>
+			<p class="h5-like"><i class="mrs fam fam_calendar"></i>{lang('project_view_h_2')}
+				{if isset($user_roles['WebdavViewer'])}<a class="right mrs" href="{$url_index}/webdav/index/{$project->getCode()}/{lang('webdav_projects_p_4')}" title="{lang('project_view_p_8')}"><i class="fam fam_calendar_link"></i></a>{/if}
+			</p>
 			<div class="gantt"></div>
 		</section>
 		{/if}
@@ -92,12 +96,16 @@
 				{if isset($user_roles['TaskEditor'])}<a class="right mrs" href="{$url_index}/task/add/{$project->getId()}" title="{lang('project_view_a_4')}"><i class="fam fam_script_add"></i></a>{/if}
 			</p>
 			<ul class="unstyled">
-			{foreach from=$project->getTasks() item=task}
+			{foreach from=$tasks item=task}
 				<li class="pointer list" title="{foreach from=$task->getTaskActors() item=taskactor}{$taskactor->getActor()->getFirstName()} {$taskactor->getActor()->getName()}{"\n"}{/foreach}{"\n"}{$task->getDescription()}" onclick="window.location.href = '{$url_index}/task/view/{$task->getId()}'">
 					[{$task->getStartDate('d/m/Y')} -> {$task->getDueDate('d/m/Y')}]
 					<div class="mls inbl">{$task->getName()}</div>
+					<div class="inbl right">
+						<span class="progressbar_holder" title="{sprintf(lang('project_view_p_12'), $task->getProgress(), $task->getProgressScore()|number_format:2)}"><span class="progressbar {$task->getProgressScore()|score_task}" style="width: {$task->getProgress()}%"></span></span>
+					</div>
 					<div class="inbl list_actions right">
 						{if isset($user_roles['TaskEditor'])}<a href="javascript:void(0)" onclick="ajax('/task/delete/{$task->getId()}');" title="{lang('project_view_a_7')}"><i class="fam fam_script_delete"></i></a>{/if}
+						{if isset($user_roles['TaskEditor'])}<a href="javascript:void(0)" onclick="ajax('/task/close/{$task->getId()}');" title="{lang('project_view_a_9')}"><i class="fam fam_script_go"></i></a>{/if}
 					</div>
 				</li>
 			{foreachelse}

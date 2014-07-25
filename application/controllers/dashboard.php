@@ -43,16 +43,33 @@ class Dashboard extends CI_Controller {
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
 
         //get user linked recents projects
-        $projects = PoGo\ProjectQuery::create()
+        $projects = PoGo\ProjectQuery::create('Project')
             ->useProjectActorQuery()
                 ->filterByActorId($this->session->userdata('actor_id'))
             ->endUse()
+            ->withColumn('CalculateProjectProgress(Project.Id)', 'Progress')
+            ->withColumn('CalculateProjectProgressScore(Project.Id)', 'ProgressScore')
             ->orderByCode('desc')
             ->limit(20)
             ->find();
 
+        //get user affected tasks
+        if ($this->pogo->auth->haveRole('TaskViewer')){
+            $tasks = PoGo\TaskQuery::create('Task')
+                ->useTaskActorQuery()
+                    ->filterByActorId($this->session->userdata('actor_id'))
+                ->endUse()
+                ->withColumn('CalculateTaskProgressScore(Task.Id)', 'ProgressScore')
+                ->filterByProgress(100, Criteria::NOT_EQUAL)
+                ->orderByStartDate()
+                ->find();
+            }else{
+                $tasks = array();
+            }
+
+
         //render
-        $this->pogo->html->view('dashboard/home.php', array('projects'=>$projects));
+        $this->pogo->html->view('dashboard/home.php', array('projects'=>$projects, 'tasks'=>$tasks));
     }
     
 }

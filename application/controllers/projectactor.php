@@ -51,7 +51,7 @@ class ProjectActor extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav($projectactor->getActor()->getFirstName().' '.$projectactor->getActor()->getName(), site_url('/projectactor/view/'.$projectactorid));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('projectactor/projectactor.php', array('project'=>$project, 'actors'=>$actors, 'projectactor'=>$projectactor));
@@ -80,7 +80,7 @@ class ProjectActor extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav(lang('projectactor_add_a_1'), site_url('/projectactor/add/'.$project->getId()));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('projectactor/projectactor.php', array('project'=>$project, 'actors'=>$actors, 'projectactor'=>$projectactor));
@@ -128,16 +128,23 @@ class ProjectActor extends CI_Controller {
     }
 
     public function Delete($projectactorid){
-        //TODO: réassocier tous les objects liés..
-        
         //Verify authorization
         $this->pogo->auth->checkRole('ProjectActorEditor');
 
-        //get projectactor or exit if not linked to project
+        //get projectactor or exit
         ($projectactor = PoGo\ProjectActorQuery::create()->findPk($projectactorid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
         //get linked project or exit if not linked to project
         ($project = $this->pogo->getLinkedProject($projectactor->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+
+        //delete all linked objects
+        PoGo\FileQuery::create()->filterByProjectId($project->getId())->filterByActorId($projectactor->getActorId())->delete();
+        PoGo\NoteQuery::create()->filterByProjectId($project->getId())->filterByActorId($projectactor->getActorId())->delete();
+
+        $tasks = PoGo\TaskQuery::create()->filterByProjectId($project->getId())->find();
+        foreach ($tasks as $task) {
+            PoGo\TaskActorQuery::create()->filterByTaskId($task->getId())->filterByActorId($projectactor->getActorId())->delete();
+        }
 
         //delete projectactor
         $projectactor->delete();

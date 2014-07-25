@@ -30,17 +30,11 @@ use PoGo\Task;
  * @method ProjectQuery orderByCode($order = Criteria::ASC) Order by the projectcode column
  * @method ProjectQuery orderByName($order = Criteria::ASC) Order by the projectname column
  * @method ProjectQuery orderByDescription($order = Criteria::ASC) Order by the projectdescription column
- * @method ProjectQuery orderByStartDate($order = Criteria::ASC) Order by the projectstartdate column
- * @method ProjectQuery orderByDueDate($order = Criteria::ASC) Order by the projectduedate column
- * @method ProjectQuery orderByEndDate($order = Criteria::ASC) Order by the projectenddate column
  *
  * @method ProjectQuery groupById() Group by the projectid column
  * @method ProjectQuery groupByCode() Group by the projectcode column
  * @method ProjectQuery groupByName() Group by the projectname column
  * @method ProjectQuery groupByDescription() Group by the projectdescription column
- * @method ProjectQuery groupByStartDate() Group by the projectstartdate column
- * @method ProjectQuery groupByDueDate() Group by the projectduedate column
- * @method ProjectQuery groupByEndDate() Group by the projectenddate column
  *
  * @method ProjectQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method ProjectQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -72,17 +66,11 @@ use PoGo\Task;
  * @method Project findOneByCode(string $projectcode) Return the first Project filtered by the projectcode column
  * @method Project findOneByName(string $projectname) Return the first Project filtered by the projectname column
  * @method Project findOneByDescription(string $projectdescription) Return the first Project filtered by the projectdescription column
- * @method Project findOneByStartDate(string $projectstartdate) Return the first Project filtered by the projectstartdate column
- * @method Project findOneByDueDate(string $projectduedate) Return the first Project filtered by the projectduedate column
- * @method Project findOneByEndDate(string $projectenddate) Return the first Project filtered by the projectenddate column
  *
  * @method array findById(int $projectid) Return Project objects filtered by the projectid column
  * @method array findByCode(string $projectcode) Return Project objects filtered by the projectcode column
  * @method array findByName(string $projectname) Return Project objects filtered by the projectname column
  * @method array findByDescription(string $projectdescription) Return Project objects filtered by the projectdescription column
- * @method array findByStartDate(string $projectstartdate) Return Project objects filtered by the projectstartdate column
- * @method array findByDueDate(string $projectduedate) Return Project objects filtered by the projectduedate column
- * @method array findByEndDate(string $projectenddate) Return Project objects filtered by the projectenddate column
  *
  * @package    propel.generator.pogo.om
  */
@@ -186,7 +174,7 @@ abstract class BaseProjectQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `projectid`, `projectcode`, `projectname`, `projectdescription`, `projectstartdate`, `projectduedate`, `projectenddate` FROM `project` WHERE `projectid` = :p0';
+        $sql = 'SELECT `projectid`, `projectcode`, `projectname`, `projectdescription` FROM `project` WHERE `projectid` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -402,135 +390,6 @@ abstract class BaseProjectQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProjectPeer::PROJECTDESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the projectstartdate column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByStartDate('2011-03-14'); // WHERE projectstartdate = '2011-03-14'
-     * $query->filterByStartDate('now'); // WHERE projectstartdate = '2011-03-14'
-     * $query->filterByStartDate(array('max' => 'yesterday')); // WHERE projectstartdate > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $startDate The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProjectQuery The current query, for fluid interface
-     */
-    public function filterByStartDate($startDate = null, $comparison = null)
-    {
-        if (is_array($startDate)) {
-            $useMinMax = false;
-            if (isset($startDate['min'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTSTARTDATE, $startDate['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($startDate['max'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTSTARTDATE, $startDate['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProjectPeer::PROJECTSTARTDATE, $startDate, $comparison);
-    }
-
-    /**
-     * Filter the query on the projectduedate column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDueDate('2011-03-14'); // WHERE projectduedate = '2011-03-14'
-     * $query->filterByDueDate('now'); // WHERE projectduedate = '2011-03-14'
-     * $query->filterByDueDate(array('max' => 'yesterday')); // WHERE projectduedate > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $dueDate The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProjectQuery The current query, for fluid interface
-     */
-    public function filterByDueDate($dueDate = null, $comparison = null)
-    {
-        if (is_array($dueDate)) {
-            $useMinMax = false;
-            if (isset($dueDate['min'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTDUEDATE, $dueDate['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($dueDate['max'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTDUEDATE, $dueDate['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProjectPeer::PROJECTDUEDATE, $dueDate, $comparison);
-    }
-
-    /**
-     * Filter the query on the projectenddate column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByEndDate('2011-03-14'); // WHERE projectenddate = '2011-03-14'
-     * $query->filterByEndDate('now'); // WHERE projectenddate = '2011-03-14'
-     * $query->filterByEndDate(array('max' => 'yesterday')); // WHERE projectenddate > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $endDate The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ProjectQuery The current query, for fluid interface
-     */
-    public function filterByEndDate($endDate = null, $comparison = null)
-    {
-        if (is_array($endDate)) {
-            $useMinMax = false;
-            if (isset($endDate['min'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTENDDATE, $endDate['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($endDate['max'])) {
-                $this->addUsingAlias(ProjectPeer::PROJECTENDDATE, $endDate['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ProjectPeer::PROJECTENDDATE, $endDate, $comparison);
     }
 
     /**

@@ -205,6 +205,23 @@ ul.unstyled {
     vertical-align: top;
 }
 
+.fg-gray {
+    color: gray;
+}
+
+.bg-score-1 { background-color: #1eb809 !important; }
+.bg-score-2 { background-color: #3abc09 !important; }
+.bg-score-3 { background-color: #57bf09 !important; }
+.bg-score-4 { background-color: #75c30a !important; }
+.bg-score-5 { background-color: #95c60a !important; }
+.bg-score-6 { background-color: #b5ca0a !important; }
+.bg-score-7 { background-color: #cec50a !important; }
+.bg-score-8 { background-color: #d1aa0b !important; }
+.bg-score-9 { background-color: #d58e0b !important; }
+.bg-score-10 { background-color: #d8710b !important; }
+.bg-score-11 { background-color: #dc520b !important; }
+.bg-score-12 { background-color: #df330c !important; }
+.bg-score-13 { background-color: #e3130c !important; }
 
 /*Typography*/
  .smaller {
@@ -240,9 +257,7 @@ h5, .h5-like {
 h6, .h6-like {
     font-size: 1.6rem;
 }
-.fg-gray {
-    color: gray;
-}
+
 .strong {
     font-weight: bold;
 }
@@ -399,6 +414,21 @@ h6, .h6-like {
 }
 .dropzone_hover {
     background-color: #D3E4D5;
+}
+.progressbar_holder {
+    margin-top: 7px;
+    margin-right: 20px;
+    height:5px;
+    width:50px;
+    background-color:#f7f7f7;
+    border:1px #848484 solid;
+    float:right;
+}
+ 
+.progressbar {
+    background-color:#009933;
+    height:5px;
+    float:left;
 }
 /*Cursor*/
  .pointer {

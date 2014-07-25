@@ -15,9 +15,6 @@ CREATE TABLE `project`
     `projectcode` VARCHAR(14) NOT NULL,
     `projectname` VARCHAR(255) NOT NULL,
     `projectdescription` TEXT,
-    `projectstartdate` DATE NOT NULL,
-    `projectduedate` DATE,
-    `projectenddate` DATE,
     PRIMARY KEY (`projectid`),
     UNIQUE INDEX `indexcode` (`projectcode`)
 ) ENGINE=MyISAM;
@@ -87,7 +84,7 @@ CREATE TABLE `milestone`
     `milestoneid` INTEGER NOT NULL AUTO_INCREMENT,
     `milestonename` VARCHAR(255) NOT NULL,
     `milestonedescription` TEXT,
-    `milestoneduedate` DATE NOT NULL,
+    `milestoneduedate` DATETIME NOT NULL,
     `projectid` INTEGER NOT NULL,
     PRIMARY KEY (`milestoneid`),
     INDEX `milestone_FI_1` (`projectid`)
@@ -104,8 +101,8 @@ CREATE TABLE `task`
     `taskid` INTEGER NOT NULL AUTO_INCREMENT,
     `taskname` VARCHAR(255) NOT NULL,
     `taskdescription` TEXT,
-    `taskstartdate` DATE,
-    `taskduedate` DATE,
+    `taskstartdate` DATETIME,
+    `taskduedate` DATETIME,
     `taskprogress` INTEGER NOT NULL,
     `projectid` INTEGER NOT NULL,
     PRIMARY KEY (`taskid`),

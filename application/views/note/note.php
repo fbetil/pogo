@@ -33,6 +33,7 @@
 	<!-- Project details -->
 	<section id="project" class="mts mbm">
 		<p class="h5-like"><i class="mrs fam fam_briefcase"></i>{lang('note_view_h_1')}</p>
+		<p><b>{lang('note_view_p_8')} :</b> <span class="inbl"><span class="progressbar_holder" title="{sprintf(lang('note_view_p_9'), $project->getProgress(), $project->getProgressScore()|number_format:2)}"><span class="progressbar {$project->getProgressScore()|score_project}" style="width: {$project->getProgress()}%"></span></span></span>
 		<p><b>{lang('note_view_p_1')}: </b>{$project->getCode()}</p>
 		<p><b>{lang('note_view_p_2')}: </b>{$project->getName()}</p>
 		<p><b>{lang('note_view_p_3')}: </b><br>{$project->getDescription()|nl2br}</p>

@@ -41,6 +41,23 @@ class PoGoHtml {
         $this->htmlMenu = array();
     }
 
+    /* Smarty: modifiers */
+
+    public function calculate_score_class($score, $config_item){
+        foreach ($config_item as $key => $value) {
+            if ($score > $value) return 'bg-score-'.($key+1);
+        }
+        return 'bg-score-13';
+    }
+
+    public function smarty_modifier_project_score($score){
+        return $this->calculate_score_class(floatval($score), $this->codeigniter->config->item('pogo_progress_score_project'));
+    }
+
+    public function smarty_modifier_task_score($score){
+        return $this->calculate_score_class(floatval($score), $this->codeigniter->config->item('pogo_progress_score_task'));
+    }
+
     /* Dump variable */
 
     public function dump($variable){
@@ -63,6 +80,10 @@ class PoGoHtml {
     public function view($view, $data = array()){
 
         $this->codeigniter->load->library('smarty');
+
+        //register modifiers
+        $this->codeigniter->smarty->registerPlugin('modifier','score_project', array($this, "smarty_modifier_project_score"));
+        $this->codeigniter->smarty->registerPlugin('modifier','score_task', array($this, "smarty_modifier_task_score"));
 
         $title = ((isset($data['title'])) ? lang('layout_title') . ' - ' . $data['title'] : lang('layout_title'));
         unset($data['title']);

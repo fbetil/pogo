@@ -39,10 +39,12 @@ class Project extends CI_Controller {
         $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
 
         //get user linked projects
-        $projects = PoGo\ProjectQuery::create()
+        $projects = PoGo\ProjectQuery::create('Project')
             ->useProjectActorQuery()
                 ->filterByActorId($this->session->userdata('actor_id'))
             ->endUse()
+            ->withColumn('CalculateProjectProgress(Project.Id)', 'Progress')
+            ->withColumn('CalculateProjectProgressScore(Project.Id)', 'ProgressScore')
             ->orderByCode('desc')
             ->find();
 
@@ -65,13 +67,19 @@ class Project extends CI_Controller {
             ->orderByVersion('desc')
             ->find();
 
+        //get tasks
+        $tasks = PoGo\TaskQuery::create('Task')
+            ->filterByProjectId($projectid)
+            ->withColumn('CalculateTaskProgressScore(Task.Id)', 'ProgressScore')
+            ->find();
+
         //generate nav
         $this->pogo->html->addToNav(lang('app_nav_1'), site_url('/dashboard'));
         $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$projectid));
 
         //render
-        $this->pogo->html->view('project/project.php', array('project'=>$project, 'files'=>$files));
+        $this->pogo->html->view('project/project.php', array('project'=>$project, 'files'=>$files, 'tasks'=>$tasks));
 	}
 
     public function Add() {
@@ -87,7 +95,7 @@ class Project extends CI_Controller {
         $this->pogo->html->addToNav(lang('app_nav_2'), site_url('/project'));
         $this->pogo->html->addToNav(lang('project_add_a_1'), site_url('/project/add'));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project'));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project'));
 
         //render
         $this->pogo->html->view('project/project.php', array('project'=>$project, 'files'=>array()));
@@ -99,6 +107,12 @@ class Project extends CI_Controller {
 
         //get project or exit if not linked to project
         ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->e401();
+
+        //get tasks
+        $tasks = PoGo\TaskQuery::create('Task')
+            ->filterByProjectId($projectid)
+            ->withColumn('CalculateTaskProgressScore(Task.Id)', 'ProgressScore')
+            ->find();
 
         //generate gantt xml data
         $gantt = array();
@@ -113,7 +127,7 @@ class Project extends CI_Controller {
                             "from" => "/Date(".$task->getStartDate('U')."000)/",
                             "to" => "/Date(".$task->getDueDate('U')."000)/",
                             "desc" => "<div class='smaller'><b>".$task->getName()."</b><br>".$task->getDescription()."</div>",
-                            "customClass" => "pointer"
+                            "customClass" => "pointer ".$this->pogo->html->smarty_modifier_task_score($task->getProgressScore())
                             )
                     )
             );
@@ -201,7 +215,7 @@ class Project extends CI_Controller {
         //get linked project or exit if not linked to project
         ($project = $this->pogo->getLinkedProject($projectid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
 
-        //delete all linked project
+        //delete all linked objects
         PoGo\FileQuery::create()->filterByProjectId($projectid)->delete();
         PoGo\MilestoneQuery::create()->filterByProjectId($projectid)->delete();
         PoGo\NoteQuery::create()->filterByProjectId($projectid)->delete();

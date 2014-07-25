@@ -46,7 +46,7 @@ class File extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav($file->getName(), site_url('/file/view/'.$fileid));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('file/file.php', array('project'=>$project, 'file'=>$file));

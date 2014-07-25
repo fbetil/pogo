@@ -45,7 +45,7 @@ class MilestoneTableMap extends TableMap
         $this->addPrimaryKey('milestoneid', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('milestonename', 'Name', 'VARCHAR', true, 255, null);
         $this->addColumn('milestonedescription', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('milestoneduedate', 'DueDate', 'DATE', true, null, null);
+        $this->addColumn('milestoneduedate', 'DueDate', 'TIMESTAMP', true, null, null);
         $this->addForeignKey('projectid', 'ProjectId', 'INTEGER', 'project', 'projectid', true, null, null);
         // validators
     } // initialize()

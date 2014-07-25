@@ -77,12 +77,19 @@ $lang["dashboard_home_h_1"] = "Tableau de bord";
 $lang["dashboard_home_h_2"] = "Projets récents";
 $lang["dashboard_home_h_3"] = "Gestion";
 $lang["dashboard_home_h_4"] = "Administration";
+$lang["dashboard_home_h_5"] = "Tâches à réaliser";
 
 $lang["dashboard_home_a_1"] = "Ajouter";
 $lang["dashboard_home_a_2"] = "Supprimer";
+$lang["dashboard_home_a_3"] = "Clôturer";
 
 $lang["dashboard_home_p_1"] = "Bienvenue dans votre espace de travail";
 $lang["dashboard_home_p_2"] = "Aucun enregistrement";
+$lang["dashboard_home_p_3"] = "Consulter la liste complète de vos projets: <a href=\"%s\">ICI</a>";
+$lang["dashboard_home_p_4"] = "Progression totale : %s%%\nScore : %s";
+$lang["dashboard_home_p_5"] = "Progression : %s%%\nScore : %s";
+$lang["dashboard_home_p_6"] = "Score d'une tâche = ((<Date de fin> - <Date courante> - <Reste à faire (h)>) / <Durée totale (h)>)";
+$lang["dashboard_home_p_7"] = "Score d'un projet = Somme des scores des tâches du projet";
 
 //Core
 $lang["core_mailgate_p_1"] = "PoGo: Erreur d'intégration email";
@@ -114,16 +121,20 @@ $lang["project_view_a_5"] = "Note du %s";
 $lang["project_view_a_6"] = "Fichier du %s";
 $lang["project_view_a_7"] = "Supprimer";
 $lang["project_view_a_8"] = "Modifier";
+$lang["project_view_a_9"] = "Clôturer";
 
 $lang["project_view_p_1"] = "Aucun enregistrement";
 $lang["project_view_p_2"] = "Nom";
 $lang["project_view_p_3"] = "Description";
 $lang["project_view_p_4"] = "Code";
-
 $lang["project_view_p_5"] = "Vous pouvez ajouter automatiquement une note\nen adressant un email contenant\nle code '%s' à l'adresse '%s'.";
 $lang["project_view_p_6"] = "Vous pouvez ajouter un fichier dans un dossier\nen le déposant sur le nom du dossier.\n\nVous pouvez également ajouter des fichiers\nen adressant un email contenant des pièces-jointes et\nle code '%s' à l'adresse '%s'.";
-
 $lang["project_view_p_7"] = "Racine";
+$lang["project_view_p_8"] = "Ajouter ce planning à votre gestionnaire de calendier (format icalendar).";
+$lang["project_view_p_9"] = "Acceder aux données de ce projet par le protocole WebDav\n à l'adresse: %s";
+$lang["project_view_p_10"] = "Progression";
+$lang["project_view_p_11"] = "Progression totale : %s%%\nScore : %s";
+$lang["project_view_p_12"] = "Progression : %s%%\nScore : %s";
 
 $lang["project_add_a_1"] = "Nouveau projet";
 
@@ -137,6 +148,7 @@ $lang["project_index_a_1"] = "Nouveau projet";
 $lang["project_index_a_2"] = "Supprimer";
 
 $lang["project_index_p_1"] = "Aucun enregistrement";
+$lang["project_index_p_2"] = "Progression totale : %s%%\nScore : %s";
 
 //File
 $lang["file_view_h_1"] = "Projet";
@@ -151,6 +163,8 @@ $lang["file_view_p_5"] = "Taille";
 $lang["file_view_p_6"] = "Version";
 $lang["file_view_p_7"] = "Auteur";
 $lang["file_view_p_8"] = "Dossier";
+$lang["file_view_p_9"] = "Progression";
+$lang["file_view_p_10"] = "Progression totale : %s%%\nScore : %s";
 
 $lang["file_view_a_1"] = "Modifier";
 $lang["file_view_a_2"] = "Supprimer";
@@ -172,9 +186,13 @@ $lang["task_view_p_7"] = "Cible";
 $lang["task_view_p_8"] = "Progression";
 $lang["task_view_p_9"] = "Aucun enregistrement";
 $lang["task_view_p_10"] = "Acteurs";
+$lang["task_view_p_11"] = "Progression";
+$lang["task_view_p_12"] = "Progression totale : %s%%\nScore : %s";
+$lang["task_view_p_13"] = "Progression : %s%%\nScore : %s";
 
 $lang["task_view_a_1"] = "Modifier";
 $lang["task_view_a_2"] = "Supprimer";
+$lang["task_view_a_3"] = "Clôturer";
 
 $lang["task_add_a_1"] = "Nouvelle tâche";
 
@@ -190,6 +208,8 @@ $lang["milestone_view_p_3"] = "Description";
 $lang["milestone_view_p_4"] = "Nom";
 $lang["milestone_view_p_5"] = "Description";
 $lang["milestone_view_p_6"] = "Cible";
+$lang["milestone_view_p_7"] = "Progression";
+$lang["milestone_view_p_8"] = "Progression totale : %s%%\nScore : %s";
 
 $lang["milestone_view_a_1"] = "Modifier";
 $lang["milestone_view_a_2"] = "Supprimer";
@@ -209,6 +229,8 @@ $lang["note_view_p_4"] = "Nom";
 $lang["note_view_p_5"] = "Publiée";
 $lang["note_view_p_6"] = "Auteur";
 $lang["note_view_p_7"] = "Contenu";
+$lang["note_view_p_8"] = "Progression";
+$lang["note_view_p_9"] = "Progression totale : %s%%\nScore : %s";
 
 $lang["note_view_a_1"] = "Modifier";
 $lang["note_view_a_2"] = "Supprimer";
@@ -226,6 +248,8 @@ $lang["projectactor_view_p_2"] = "Nom";
 $lang["projectactor_view_p_3"] = "Description";
 $lang["projectactor_view_p_4"] = "Acteur";
 $lang["projectactor_view_p_5"] = "Rôle";
+$lang["projectactor_view_p_6"] = "Progression";
+$lang["projectactor_view_p_7"] = "Progression totale : %s%%\nScore : %s";
 
 $lang["projectactor_view_a_1"] = "Modifier";
 $lang["projectactor_view_a_2"] = "Supprimer";
@@ -238,6 +262,10 @@ $lang["webdav_projects_p_2"] = "Fichiers";
 $lang["webdav_projects_p_3"] = "Acteurs";
 $lang["webdav_projects_p_4"] = "Planning GANTT.ics";
 $lang["webdav_projects_p_5"] = "%s pour le projet %s";
+$lang["webdav_projects_p_6"] = "Tâches associées:";
+$lang["webdav_projects_p_7"] = "Acteurs associés:";
+$lang["webdav_projects_p_8"] = "Progression : %s%%\nScore : %s";
+$lang["webdav_projects_p_9"] = "Progression totale : %s%%\nScore : %s";
 
 //Errors
 $lang["error_processing_json"] = "Erreur d'interprétation de la chaîne JSON.";

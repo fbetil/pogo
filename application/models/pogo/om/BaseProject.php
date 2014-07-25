@@ -5,13 +5,11 @@ namespace PoGo\om;
 use \BaseObject;
 use \BasePeer;
 use \Criteria;
-use \DateTime;
 use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
 use \PropelCollection;
-use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
@@ -80,24 +78,6 @@ abstract class BaseProject extends BaseObject implements Persistent
      * @var        string
      */
     protected $projectdescription;
-
-    /**
-     * The value for the projectstartdate field.
-     * @var        string
-     */
-    protected $projectstartdate;
-
-    /**
-     * The value for the projectduedate field.
-     * @var        string
-     */
-    protected $projectduedate;
-
-    /**
-     * The value for the projectenddate field.
-     * @var        string
-     */
-    protected $projectenddate;
 
     /**
      * @var        PropelObjectCollection|ProjectActor[] Collection to store aggregation of ProjectActor objects.
@@ -220,126 +200,6 @@ abstract class BaseProject extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [projectstartdate] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getStartDate($format = '%x')
-    {
-        if ($this->projectstartdate === null) {
-            return null;
-        }
-
-        if ($this->projectstartdate === '0000-00-00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->projectstartdate);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->projectstartdate, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [projectduedate] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getDueDate($format = '%x')
-    {
-        if ($this->projectduedate === null) {
-            return null;
-        }
-
-        if ($this->projectduedate === '0000-00-00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->projectduedate);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->projectduedate, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [projectenddate] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getEndDate($format = '%x')
-    {
-        if ($this->projectenddate === null) {
-            return null;
-        }
-
-        if ($this->projectenddate === '0000-00-00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->projectenddate);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->projectenddate, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
      * Set the value of [projectid] column.
      *
      * @param int $v new value
@@ -424,75 +284,6 @@ abstract class BaseProject extends BaseObject implements Persistent
     } // setDescription()
 
     /**
-     * Sets the value of [projectstartdate] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Project The current object (for fluent API support)
-     */
-    public function setStartDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->projectstartdate !== null || $dt !== null) {
-            $currentDateAsString = ($this->projectstartdate !== null && $tmpDt = new DateTime($this->projectstartdate)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->projectstartdate = $newDateAsString;
-                $this->modifiedColumns[] = ProjectPeer::PROJECTSTARTDATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setStartDate()
-
-    /**
-     * Sets the value of [projectduedate] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Project The current object (for fluent API support)
-     */
-    public function setDueDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->projectduedate !== null || $dt !== null) {
-            $currentDateAsString = ($this->projectduedate !== null && $tmpDt = new DateTime($this->projectduedate)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->projectduedate = $newDateAsString;
-                $this->modifiedColumns[] = ProjectPeer::PROJECTDUEDATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setDueDate()
-
-    /**
-     * Sets the value of [projectenddate] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Project The current object (for fluent API support)
-     */
-    public function setEndDate($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->projectenddate !== null || $dt !== null) {
-            $currentDateAsString = ($this->projectenddate !== null && $tmpDt = new DateTime($this->projectenddate)) ? $tmpDt->format('Y-m-d') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->projectenddate = $newDateAsString;
-                $this->modifiedColumns[] = ProjectPeer::PROJECTENDDATE;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setEndDate()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -528,9 +319,6 @@ abstract class BaseProject extends BaseObject implements Persistent
             $this->projectcode = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->projectname = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->projectdescription = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->projectstartdate = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->projectduedate = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->projectenddate = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -539,7 +327,7 @@ abstract class BaseProject extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 7; // 7 = ProjectPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = ProjectPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Project object", $e);
@@ -858,15 +646,6 @@ abstract class BaseProject extends BaseObject implements Persistent
         if ($this->isColumnModified(ProjectPeer::PROJECTDESCRIPTION)) {
             $modifiedColumns[':p' . $index++]  = '`projectdescription`';
         }
-        if ($this->isColumnModified(ProjectPeer::PROJECTSTARTDATE)) {
-            $modifiedColumns[':p' . $index++]  = '`projectstartdate`';
-        }
-        if ($this->isColumnModified(ProjectPeer::PROJECTDUEDATE)) {
-            $modifiedColumns[':p' . $index++]  = '`projectduedate`';
-        }
-        if ($this->isColumnModified(ProjectPeer::PROJECTENDDATE)) {
-            $modifiedColumns[':p' . $index++]  = '`projectenddate`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `project` (%s) VALUES (%s)',
@@ -889,15 +668,6 @@ abstract class BaseProject extends BaseObject implements Persistent
                         break;
                     case '`projectdescription`':
                         $stmt->bindValue($identifier, $this->projectdescription, PDO::PARAM_STR);
-                        break;
-                    case '`projectstartdate`':
-                        $stmt->bindValue($identifier, $this->projectstartdate, PDO::PARAM_STR);
-                        break;
-                    case '`projectduedate`':
-                        $stmt->bindValue($identifier, $this->projectduedate, PDO::PARAM_STR);
-                        break;
-                    case '`projectenddate`':
-                        $stmt->bindValue($identifier, $this->projectenddate, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1085,15 +855,6 @@ abstract class BaseProject extends BaseObject implements Persistent
             case 3:
                 return $this->getDescription();
                 break;
-            case 4:
-                return $this->getStartDate();
-                break;
-            case 5:
-                return $this->getDueDate();
-                break;
-            case 6:
-                return $this->getEndDate();
-                break;
             default:
                 return null;
                 break;
@@ -1127,9 +888,6 @@ abstract class BaseProject extends BaseObject implements Persistent
             $keys[1] => $this->getCode(),
             $keys[2] => $this->getName(),
             $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getStartDate(),
-            $keys[5] => $this->getDueDate(),
-            $keys[6] => $this->getEndDate(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->collProjectActors) {
@@ -1193,15 +951,6 @@ abstract class BaseProject extends BaseObject implements Persistent
             case 3:
                 $this->setDescription($value);
                 break;
-            case 4:
-                $this->setStartDate($value);
-                break;
-            case 5:
-                $this->setDueDate($value);
-                break;
-            case 6:
-                $this->setEndDate($value);
-                break;
         } // switch()
     }
 
@@ -1230,9 +979,6 @@ abstract class BaseProject extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setCode($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setStartDate($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDueDate($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setEndDate($arr[$keys[6]]);
     }
 
     /**
@@ -1248,9 +994,6 @@ abstract class BaseProject extends BaseObject implements Persistent
         if ($this->isColumnModified(ProjectPeer::PROJECTCODE)) $criteria->add(ProjectPeer::PROJECTCODE, $this->projectcode);
         if ($this->isColumnModified(ProjectPeer::PROJECTNAME)) $criteria->add(ProjectPeer::PROJECTNAME, $this->projectname);
         if ($this->isColumnModified(ProjectPeer::PROJECTDESCRIPTION)) $criteria->add(ProjectPeer::PROJECTDESCRIPTION, $this->projectdescription);
-        if ($this->isColumnModified(ProjectPeer::PROJECTSTARTDATE)) $criteria->add(ProjectPeer::PROJECTSTARTDATE, $this->projectstartdate);
-        if ($this->isColumnModified(ProjectPeer::PROJECTDUEDATE)) $criteria->add(ProjectPeer::PROJECTDUEDATE, $this->projectduedate);
-        if ($this->isColumnModified(ProjectPeer::PROJECTENDDATE)) $criteria->add(ProjectPeer::PROJECTENDDATE, $this->projectenddate);
 
         return $criteria;
     }
@@ -1317,9 +1060,6 @@ abstract class BaseProject extends BaseObject implements Persistent
         $copyObj->setCode($this->getCode());
         $copyObj->setName($this->getName());
         $copyObj->setDescription($this->getDescription());
-        $copyObj->setStartDate($this->getStartDate());
-        $copyObj->setDueDate($this->getDueDate());
-        $copyObj->setEndDate($this->getEndDate());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2610,9 +2350,6 @@ abstract class BaseProject extends BaseObject implements Persistent
         $this->projectcode = null;
         $this->projectname = null;
         $this->projectdescription = null;
-        $this->projectstartdate = null;
-        $this->projectduedate = null;
-        $this->projectenddate = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

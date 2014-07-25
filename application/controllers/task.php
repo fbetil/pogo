@@ -35,7 +35,7 @@ class Task extends CI_Controller {
         $this->pogo->auth->checkRole('TaskViewer');
 
         //get task or exit if task not exists
-        ($task = PoGo\TaskQuery::create()->findPk($taskid)) ?: $this->pogo->html->e401();
+        ($task = PoGo\TaskQuery::create('Task')->withColumn('CalculateTaskProgressScore(Task.Id)', 'ProgressScore')->findPk($taskid)) ?: $this->pogo->html->e401();
 
         //get linked project or exit if not linked to project
         ($project = $this->pogo->getLinkedProject($task->getProjectId())) ?: $this->pogo->html->e401();
@@ -57,7 +57,7 @@ class Task extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav($task->getName(), site_url('/task/view/'.$taskid));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task, 'taskactors'=>$taskactors, 'taskactorsnames'=>$taskactorsnames, 'taskactorsall'=>$taskactorsall));
@@ -94,7 +94,7 @@ class Task extends CI_Controller {
         $this->pogo->html->addToNav($project->getCode(), site_url('/project/view/'.$project->getId()));
         $this->pogo->html->addToNav(lang('task_add_a_1'), site_url('/task/add/'.$project->getId()));
 
-        $this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
+        //$this->pogo->html->addToMenu('<= '.lang('app_menu_1'), site_url('/project/view/'.$project->getId()));
 
         //render
         $this->pogo->html->view('task/task.php', array('project'=>$project, 'task'=>$task, 'taskactors'=>$taskactors, 'taskactorsnames'=>$taskactorsnames, 'taskactorsall'=>$taskactorsall));
@@ -164,7 +164,7 @@ class Task extends CI_Controller {
 
     public function Delete($taskid){
         //Verify authorization
-        $this->pogo->auth->checkRole('MilestoneEditor');
+        $this->pogo->auth->checkRole('TaskEditor');
 
         //get task or exit if not linked to project
         ($task = PoGo\TaskQuery::create()->findPk($taskid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
@@ -174,6 +174,23 @@ class Task extends CI_Controller {
 
         //delete task
         $task->delete();
+
+        //return success
+        $this->pogo->html->success();
+    }
+
+    public function Close($taskid){
+        //Verify authorization
+        $this->pogo->auth->checkRole('TaskEditor');
+
+        //get task or exit if not linked to project
+        ($task = PoGo\TaskQuery::create()->findPk($taskid)) ?: $this->pogo->html->error(lang('error_not_allowed'));
+
+        //get linked project or exit if not linked to project
+        ($project = $this->pogo->getLinkedProject($task->getProjectId())) ?: $this->pogo->html->error(lang('error_not_allowed'));
+
+        //set progression  task
+        $task->setProgress(100)->save();
 
         //return success
         $this->pogo->html->success();

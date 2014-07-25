@@ -37,6 +37,10 @@ class Core extends CI_Controller {
         phpinfo();
     }
 
+    public function test(){
+        var_dump($this->pogo->calculateProjectProgression(1));
+    }
+
     public function Propel($task = false) {
         //Verify authorization
         $this->pogo->auth->checkRole('AdminEditor');

@@ -9,9 +9,6 @@
 		</unique>
 		<column name="projectname" type="varchar" size="255" required="true" phpName="Name"/>
 		<column name="projectdescription" type="longvarchar" phpName="Description"/>
-		<column name="projectstartdate" type="date" required="true" phpName="StartDate"/>
-		<column name="projectduedate" type="date" phpName="DueDate"/>
-		<column name="projectenddate" type="date" phpName="EndDate"/>
 	</table>
 
 	<table name="project_actor" phpName="ProjectActor">
@@ -59,7 +56,7 @@
 		<column name="milestoneid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
 		<column name="milestonename" type="varchar" size="255" required="true" phpName="Name"/>
 		<column name="milestonedescription" type="longvarchar" phpName="Description"/>
-		<column name="milestoneduedate" type="date" required="true" phpName="DueDate"/>
+		<column name="milestoneduedate" type="timestamp" required="true" phpName="DueDate"/>
         <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
         <foreign-key foreignTable="project" phpName="Project">
             <reference local="projectid" foreign="projectid"/>
@@ -71,8 +68,8 @@
 		<column name="taskid" type="integer" required="true" primaryKey="true" autoIncrement="true" phpName="Id"/>
 		<column name="taskname" type="varchar" size="255" required="true" phpName="Name"/>
 		<column name="taskdescription" type="longvarchar" phpName="Description"/>
-		<column name="taskstartdate" type="date" phpName="StartDate"/>
-		<column name="taskduedate" type="date" phpName="DueDate"/>
+		<column name="taskstartdate" type="timestamp" phpName="StartDate"/>
+		<column name="taskduedate" type="timestamp" phpName="DueDate"/>
 		<column name="taskprogress" type="integer" required="true" phpName="Progress"/>
         <column name="projectid" type="integer" required="true" phpName="ProjectId"/>
         <foreign-key foreignTable="project" phpName="Project">

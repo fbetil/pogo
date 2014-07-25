@@ -45,8 +45,8 @@ class TaskTableMap extends TableMap
         $this->addPrimaryKey('taskid', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('taskname', 'Name', 'VARCHAR', true, 255, null);
         $this->addColumn('taskdescription', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('taskstartdate', 'StartDate', 'DATE', false, null, null);
-        $this->addColumn('taskduedate', 'DueDate', 'DATE', false, null, null);
+        $this->addColumn('taskstartdate', 'StartDate', 'TIMESTAMP', false, null, null);
+        $this->addColumn('taskduedate', 'DueDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('taskprogress', 'Progress', 'INTEGER', true, null, null);
         $this->addForeignKey('projectid', 'ProjectId', 'INTEGER', 'project', 'projectid', true, null, null);
         // validators

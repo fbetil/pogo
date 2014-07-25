@@ -45,3 +45,6 @@ $config['pogo_imap_user'] = 'pogo';
 $config['pogo_imap_password'] = 'mypassword';
 //Version
 $config['pogo_version'] = 'v0.0.1';
+//Progress Score: Map score to bg-score-1,...,bg-score-12 css classes . bg-score-13 is automatic
+$config['pogo_progress_score_project'] = array(0,-0.1,-0.2,-0.4,-0.6,-0.8,-1,-1.2,-1.5,-2,-3,-5);
+$config['pogo_progress_score_task'] = array(0,-0.1,-0.2,-0.4,-0.6,-0.8,-1,-1.2,-1.5,-2,-3,-5);

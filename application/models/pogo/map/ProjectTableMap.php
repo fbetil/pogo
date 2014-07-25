@@ -46,9 +46,6 @@ class ProjectTableMap extends TableMap
         $this->addColumn('projectcode', 'Code', 'VARCHAR', true, 14, null);
         $this->addColumn('projectname', 'Name', 'VARCHAR', true, 255, null);
         $this->addColumn('projectdescription', 'Description', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('projectstartdate', 'StartDate', 'DATE', true, null, null);
-        $this->addColumn('projectduedate', 'DueDate', 'DATE', false, null, null);
-        $this->addColumn('projectenddate', 'EndDate', 'DATE', false, null, null);
         // validators
     } // initialize()
 
